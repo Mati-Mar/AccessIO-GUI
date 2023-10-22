@@ -46,7 +46,7 @@ void MainWindow::EnumerarPuertos()
 
 void MainWindow::on_pushButtonConectar_clicked()
 {
-    if (Port)
+    if (!Port)
     {
         Port = new QSerialPort(Portname);
         Port->setBaudRate(QSerialPort::Baud9600);
