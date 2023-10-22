@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>486</width>
-    <height>368</height>
+    <width>709</width>
+    <height>367</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,47 +30,16 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pushButtonConectar">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="text">
-       <string>TX</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2" colspan="2" alignment="Qt::AlignVCenter">
-     <widget class="QPushButton" name="LedRojoPushButton">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(237, 51, 59);
-color: rgb(0, 0, 0);</string>
-      </property>
-      <property name="text">
-       <string>Led Rojo</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>RX</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2" colspan="3">
-     <widget class="QPlainTextEdit" name="plainTextEditRX">
-      <property name="plainText">
-       <string/>
+       <string>Conectar</string>
       </property>
      </widget>
     </item>
@@ -96,38 +65,61 @@ color: rgb(0, 0, 0);</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pushButtonConectar">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Conectar</string>
+       <string>RX</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="2" colspan="2">
-     <widget class="QPushButton" name="LedVerdePushButton">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(51, 209, 122);
-color: rgb(0, 0, 0);</string>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="text">
-       <string>Led Verde</string>
+       <string>TX</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="2" colspan="2">
+    <item row="5" column="4">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Ingresar sin conexión</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="testingPushButton">
+      <property name="text">
+       <string>TESTING</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
      <widget class="QPlainTextEdit" name="plainTextEditTX">
       <property name="plainText">
        <string/>
       </property>
      </widget>
     </item>
-    <item row="4" column="4">
+    <item row="2" column="2">
+     <widget class="QPlainTextEdit" name="plainTextEditRX">
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
      <widget class="QPushButton" name="pushButtonEnviar">
       <property name="enabled">
        <bool>true</bool>
@@ -137,14 +129,10 @@ color: rgb(0, 0, 0);</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="2" colspan="2">
-     <widget class="QPushButton" name="LedAzulPushButton">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(53, 132, 228);
-color: rgb(0, 0, 0);</string>
-      </property>
+    <item row="2" column="4">
+     <widget class="QLabel" name="testLabel">
       <property name="text">
-       <string>Led Azul</string>
+       <string/>
       </property>
      </widget>
     </item>

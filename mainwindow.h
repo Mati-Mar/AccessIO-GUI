@@ -1,9 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QSqlDatabase>
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+
+#include <postgresqlconnector.h>
 
 namespace Ui {
 class MainWindow;
@@ -26,17 +29,16 @@ private slots:
     void on_pushButtonConectar_clicked();
     void on_Port_rx();
 
-    void on_LedRojoPushButton_clicked();
+    void on_pushButton_clicked();
 
-    void on_LedVerdePushButton_clicked();
-
-    void on_LedAzulPushButton_clicked();
+    void on_testingPushButton_clicked();
 
 private:
     QString Portname;
     //QextSerialPort *Port;
     QSerialPort *Port;
     void EnumerarPuertos();
+    PostgreSQLConnector *SQLConnector;
 };
 
 #endif // MAINWINDOW_H
