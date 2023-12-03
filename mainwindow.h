@@ -3,7 +3,6 @@
 
 #include <QSqlDatabase>
 #include <QMainWindow>
-#include <QSerialPort>
 #include <QSerialPortInfo>
 
 #include <postgresqlconnector.h>
@@ -25,20 +24,16 @@ private:
 
 private slots:
     void on_comboBoxPort_currentIndexChanged(int index);
-    void on_pushButtonEnviar_clicked();
     void on_pushButtonConectar_clicked();
     void on_Port_rx();
-
-    void on_pushButton_clicked();
-
-    void on_testingPushButton_clicked();
+    void on_sinConexionPushButton_clicked();
 
 private:
     QString Portname;
     //QextSerialPort *Port;
-    QSerialPort *Port;
     void EnumerarPuertos();
     PostgreSQLConnector *SQLConnector;
+    void abrirFrontpage(bool isUartConnectedFlag);
 };
 
 #endif // MAINWINDOW_H

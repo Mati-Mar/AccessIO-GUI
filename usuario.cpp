@@ -1,5 +1,7 @@
 #include "usuario.h"
 
+#include <QSqlQuery>
+
 usuario::usuario(   unsigned int newId,
                     QString newNombre,
                     QString newApellido,
@@ -13,7 +15,7 @@ usuario::usuario(   unsigned int newId,
 
 usuario::~usuario()
 {
-
+    delete this;
 }
 
 int usuario::getId() const
@@ -56,14 +58,9 @@ void usuario::setEdad(unsigned int newEdad)
     edad = newEdad;
 }
 
-void usuario::save(QString nombre, QString apellido, unsigned int edad)
+usuario* usuario::getUsuario()
 {
-
-}
-
-usuario usuario::getUsuario()
-{
-
+    return this;
 }
 
 QList<usuario> usuario::getUsuarios()

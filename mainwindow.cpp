@@ -17,8 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("AccessIO");
+    this->setFixedSize(540,100);
 
-    Port = NULL; //indica que el objeto puerto no esta creado
+    //Port = NULL; //indica que el objeto puerto no esta creado
     Portname = "";
     EnumerarPuertos();
     SQLConnector = new PostgreSQLConnector
@@ -28,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete Port;
     delete SQLConnector;
 }
 
@@ -44,37 +44,61 @@ void MainWindow::EnumerarPuertos()
     }
 }
 
+void MainWindow::abrirFrontpage(bool isUartConnectedFlag) {
+
+    if (isUartConnectedFlag)
+    {
+        //Modo UART
+        FrontPage *frontPage = new FrontPage(nullptr, Portname);
+        frontPage->setWindowTitle("AccessIO");
+        frontPage->show();
+        this->hide();
+    } else {
+        //Modo SIN CONEXION
+        FrontPage* frontPage = new FrontPage(nullptr, "");
+        frontPage->setWindowTitle("AccessIO");
+        frontPage->show();
+        this->hide();
+    }
+
+}
+
+//Hay que corregir este método
 void MainWindow::on_pushButtonConectar_clicked()
 {
-    if (!Port)
+    //Portname = ui->comboBoxPort->itemData(index).toString();    //recupero la data del item de indice index
+    if (Portname != "")
     {
-        Port = new QSerialPort(Portname);
-        Port->setBaudRate(QSerialPort::Baud9600);
-        Port->setFlowControl(QSerialPort::NoFlowControl);
-        Port->setParity(QSerialPort::NoParity);
-        Port->setDataBits(QSerialPort::Data8);
-        Port->setStopBits(QSerialPort::OneStop);
-        if(!Port->open(QIODevice::ReadWrite))
+        abrirFrontpage(true);
+        //Quiero deshabilitar el botón
+        //ui->pushButtonConectar->setText("Desconectar");
+
+
+        /*if(!Port->open(QIODevice::ReadWrite))
         {
             QMessageBox::critical(this,"Error","No se puede abrir el puerto "+Port->portName());
-            delete Port;
-            Port = NULL;
         }
         else
         {
-            ui->pushButtonConectar->setText("Desconectar");
+
             connect(Port,SIGNAL(readyRead()),this,SLOT(on_Port_rx()));
-            //TODO: CON EL LPC CONECTADO CODEAR ACA
+
+            abrirFrontpage(true);
         }
+        */
     }
     else
     {
-        delete Port;
-        Port = NULL;
-        ui->pushButtonConectar->setText("Conectar");
+        abrirFrontpage(false);
+        //Quiero deshabilitar el botón
+        //ui->pushButtonConectar->toggle();
     }
 }
 
+
+
+
+/*
 void MainWindow::on_pushButtonEnviar_clicked()
 {
     if(Port)
@@ -90,13 +114,16 @@ void MainWindow::on_pushButtonEnviar_clicked()
         QMessageBox::critical(this,"Error",QString::fromLatin1("No hay ningún puerto abierto"));
     }
 }
+*/
+
 
 void MainWindow::on_Port_rx()
 {
-    QByteArray aux;
-    aux.resize(Port->bytesAvailable());
-    Port->read(aux.data(),aux.size());
-    ui->plainTextEditRX->appendPlainText(aux);
+//    QByteArray aux;
+//    aux.resize(Port->bytesAvailable());
+//    Port->read(aux.data(),aux.size());
+//    ui->plainTextEditRX->appendPlainText(aux);
+
 }
 
 void MainWindow::on_comboBoxPort_currentIndexChanged(int index)
@@ -104,16 +131,16 @@ void MainWindow::on_comboBoxPort_currentIndexChanged(int index)
     Portname = ui->comboBoxPort->itemData(index).toString();    //recupero la data del item de indice index
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_sinConexionPushButton_clicked()
 {
-    this->close();
+    abrirFrontpage(false);
 }
 
-
+/*
 void MainWindow::on_testingPushButton_clicked()
 {
-    QSqlQuery query;
-    QString resultado;
+//    QSqlQuery query;
+//    QString resultado;
 //    if (SQLConnector->abrirConexionBD())
 //    {
 //        query = SQLConnector->ejecutarQuery("SELECT nombre FROM " + SQLConnector->getSchema() + ".usuarios");
@@ -122,10 +149,7 @@ void MainWindow::on_testingPushButton_clicked()
 //        }
 //        ui->testLabel->setText(resultado);
 //        SQLConnector->cerrarConexionBD();
-        FrontPage *frontPage = new FrontPage(nullptr, Portname);
-        frontPage->setWindowTitle("AccessIO");
-        frontPage->show();
-        this->hide();
+        abrirFrontpage(true);
 //    }
 //    else
 //    {
@@ -134,3 +158,6 @@ void MainWindow::on_testingPushButton_clicked()
 //    }
 
 }
+*/
+
+

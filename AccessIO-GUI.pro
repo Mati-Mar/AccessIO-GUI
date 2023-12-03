@@ -13,21 +13,30 @@ QT += serialport
 QT += sql
 
 SOURCES += \
+    edificiopage.cpp \
     frontpage.cpp \
+    in_outpage.cpp \
     main.cpp \
     mainwindow.cpp \
     postgresqlconnector.cpp \
-    usuario.cpp
+    usuario.cpp \
+    usuariospage.cpp
 
 HEADERS += \
+    edificiopage.h \
     frontpage.h \
+    in_outpage.h \
     mainwindow.h \
     postgresqlconnector.h \
-    usuario.h
+    usuario.h \
+    usuariospage.h
 
 FORMS += \
+    edificiopage.ui \
     frontpage.ui \
-    mainwindow.ui
+    in_outpage.ui \
+    mainwindow.ui \
+    usuariospage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

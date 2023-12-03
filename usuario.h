@@ -5,6 +5,7 @@
 
 class usuario
 {
+    //De ser necesario la clase puede tener el ultimo id estatico para saber el ultimo id
 public:
     usuario(unsigned int newId,
             QString newNombre,
@@ -25,8 +26,8 @@ private:
     QString nombre;
     QString apellido;
     int edad;
-    void save(QString nombre, QString apellido, unsigned int edad);
-    usuario getUsuario();
+    usuario& crearUsuario(QString nombre, QString apellido, unsigned int edad);
+    usuario* getUsuario();
     QList<usuario> getUsuarios();
 
 
