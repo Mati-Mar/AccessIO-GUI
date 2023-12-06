@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSerialPort>
+#include <QByteArray>
 
 #include "postgresqlconnector.h"
 
@@ -15,9 +16,10 @@ class FrontPage : public QMainWindow
     Q_OBJECT
 
 public:
+    void recieve(QString Rx);
     explicit FrontPage(QWidget *parent = nullptr);
     //FrontPage(QWidget *parent = nullptr, QSerialPort port);
-    explicit FrontPage(QWidget *parent = nullptr, QString portname = "");
+    explicit FrontPage(QWidget *parent = nullptr, QString portname= "");
     ~FrontPage();
     bool isUartConnectedFlag;
 
@@ -28,11 +30,22 @@ public:
 
 private slots:
     void on_edificioPushButton_clicked();
+    void on_Port_rx();
+
+    void on_usuariosPushButton_clicked();
 
 private:
+    void handlePas(QByteArray RcArr);
+
     Ui::FrontPage *ui;
     QSerialPort *Port;
     QString portname;
+    QByteArray RcArr;
+
+
+
+
+    PostgreSQLConnector * PqslCon;
     void initPort(QString portname);
     void initFrontpage();
     void abrirEdificioPage();

@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QVariant>
 
 //TODO: Se podría implementar un patrón Singleton para no tener que instanciar siempre esta clase.
 //Una opcion que me gusta más es crearlo como un PostgreService y hacer como un método static la conexión a la base de datos
@@ -35,15 +36,24 @@ private:
 public:
     //DEBUG ONLY
 
+    bool VerifyPass(QString pass, QString idOficina);
+    bool VerifyUUID(QString UUID, QString LugarDeAcceso);
+
+
     QString getHostname() const;
     void setHostname(const QString &newHostname);
     QString getDatabaseName() const;
     void setDatabaseName(const QString &newDatabaseName);
     void setSchema(const QString &newSchema);
-    QString getUsername() const;
+
+    QString getUsernameByOficina(QString Id);
+    QString getUsernameById(QString Id);
+
     void setUsername(const QString &newUsername);
-    QString getPassword() const;
+    QString getPassword(QString oficina);
     void setPassword(const QString &newPassword);
+    bool isOpen();
+
 };
 
 #endif // POSTGRESQLCONNECTOR_H

@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Port = NULL; //indica que el objeto puerto no esta creado
     Portname = "";
     EnumerarPuertos();
-    SQLConnector = new PostgreSQLConnector
-        ("localhost","AccessIO","postgres","accessio","root");
+    //SQLConnector = new PostgreSQLConnector
+    //    ("localhost","AccessIO","postgres","accessio","root");
 }
 
 MainWindow::~MainWindow()
@@ -119,10 +119,17 @@ void MainWindow::on_pushButtonEnviar_clicked()
 
 void MainWindow::on_Port_rx()
 {
-//    QByteArray aux;
-//    aux.resize(Port->bytesAvailable());
-//    Port->read(aux.data(),aux.size());
-//    ui->plainTextEditRX->appendPlainText(aux);
+    QByteArray aux;
+    while(Port->bytesAvailable()){
+        Port->read(aux.data(),1);
+        RcArr.append(aux.data()[0]);
+        if(aux.data()[0]=='$'){
+            frontPage->recieve(QString());
+            RcArr.clear();
+            break;
+        }
+    }
+
 
 }
 
