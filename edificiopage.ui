@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>300</height>
+    <width>1000</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QLabel" name="logoLabel">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>810</x>
      <y>10</y>
      <width>151</width>
      <height>41</height>
@@ -26,30 +26,109 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="portLabel">
+  <widget class="QLabel" name="salasLabel">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>110</y>
-     <width>191</width>
-     <height>17</height>
+     <x>290</x>
+     <y>70</y>
+     <width>671</width>
+     <height>491</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>110</y>
-     <width>81</width>
-     <height>17</height>
+     <x>10</x>
+     <y>190</y>
+     <width>241</width>
+     <height>184</height>
     </rect>
    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="totalTextLabel">
+        <property name="text">
+         <string>En el edificio hay:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="maquinasTextLabel">
+        <property name="text">
+         <string>En la Sala de Máquinas hay: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="oficinasTextLabel">
+        <property name="text">
+         <string>En la Sala de Oficinas hay:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="hallTextLabel">
+        <property name="text">
+         <string>En el Hall hay:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="totalCounterLabel">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="maquinasCounterLabel">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="oficinasCounterLabel">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="hallCounterLabel">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="reloadPushButton">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>380</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/img/Relaod.png);</string>
+   </property>
    <property name="text">
-    <string>El puerto es:</string>
+    <string/>
    </property>
   </widget>
  </widget>
