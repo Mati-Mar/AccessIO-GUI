@@ -132,12 +132,12 @@ QString PostgreSQLConnector::getPassword(QString oficinaId) { //Se podría cambi
     }
 
     QSqlQuery *query = new QSqlQuery(db);
-    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina='" + oficinaId + "'");
+    query->exec("SELECT secret_pass FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficinaId + "'");
     //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){
-        return query->value(7).toString();
+        return query->value(0).toString();
     }
     else
         return "";

@@ -31,6 +31,8 @@ private slots:
 
     void on_inoutPushButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     void handlePas(QByteArray RcArr);
 
