@@ -86,6 +86,24 @@ void PostgreSQLConnector::setDatabaseName(const QString &newDatabaseName)
     databaseName = newDatabaseName;
 }
 
+bool PostgreSQLConnector::ExistOficinaId( QString OficinaId)
+{
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+
+    query->exec("SELECT oficina_id FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + OficinaId + "'");
+    cerrarConexionBD();
+
+    if(query->next()){
+        return true; //Nombre más apellido
+    }
+    else
+        return false;}
+
+
 QString PostgreSQLConnector::getUsernameByUID(QString uid)
 {
     if(!db.isOpen()){
@@ -111,7 +129,7 @@ QString PostgreSQLConnector::getUsernameByOficina(QString oficina){
 
     QSqlQuery *query = new QSqlQuery(db);
 
-    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina='" + oficina + "'");
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficina + "'");
     cerrarConexionBD();
 
     if(query->next()){
@@ -133,7 +151,6 @@ QString PostgreSQLConnector::getPassword(QString oficinaId) { //Se podría cambi
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("SELECT secret_pass FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficinaId + "'");
-    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){

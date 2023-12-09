@@ -52,7 +52,7 @@ public:
     unsigned int getUsuariosInRoom( QString room );
     QSqlTableModel* getModeloUsuarios(QObject *parent = nullptr);
     QSqlTableModel* getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido);
-
+    bool ExistOficinaId( QString OficinaId);
 
 };
 
