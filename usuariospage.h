@@ -20,6 +20,9 @@ public:
                           PostgreSQLConnector* PSQLConnector = nullptr);
     ~UsuariosPage();
 
+private slots:
+    void on_Commit_clicked();
+
 private:
     Ui::UsuariosPage *ui;
     void initUsuariosPage( void );

@@ -23,6 +23,7 @@ void FrontPage::on_Port_rx()
         Port->read(aux.data(),1);
         RcArr.append(aux.data()[0]);
         if(aux.data()[0]=='$'){
+
             if(RcArr[1]=='P'){
                 handlePas(RcArr);
             }
@@ -38,7 +39,7 @@ FrontPage::FrontPage(QWidget *parent, QString portname) :
     ui(new Ui::FrontPage)
 {
     this->PSQLConnector = new PostgreSQLConnector
-        ("localhost","AccessIO","postgres","accessio","root");
+        ("localhost","accessio","postgres","accessio","root");
     PSQLConnector->cerrarConexionBD();
     isUartConnectedFlag = !(portname == "");
     setPortname(portname);
@@ -96,6 +97,7 @@ void FrontPage::abrirEdificioPage() {
 }
 
 void FrontPage::abrirUsuariosPage() {
+
     if (isUartConnectedFlag) {
         //Modo UART
         UsuariosPage *usuariosPage= new UsuariosPage(nullptr, Port, PSQLConnector);
