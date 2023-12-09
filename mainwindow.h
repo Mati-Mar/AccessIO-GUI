@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QMainWindow>
 #include <QSerialPortInfo>
+#include "frontpage.h"
 
 #include <postgresqlconnector.h>
 
@@ -30,7 +31,10 @@ private slots:
 
 private:
     QString Portname;
-    //QextSerialPort *Port;
+    QSerialPort *Port;
+    FrontPage * frontPage;
+    QByteArray RcArr;
+
     void EnumerarPuertos();
     PostgreSQLConnector *SQLConnector;
     void abrirFrontpage(bool isUartConnectedFlag);
