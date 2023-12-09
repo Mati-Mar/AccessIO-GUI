@@ -28,17 +28,15 @@ void In_OutPage::initIn_OutPage( void ) {
 
     if (!PSQLConnector->isOpen())
         PSQLConnector->abrirConexionBD();
-
-    //QSqlTableModel *model = PSQLConnector->getModeloUsuarioLocation();
-    //ui->tablaUsuarios->setModel(model);
-    //ui->tablaUsuarios->setColumnHidden(model->fieldIndex("id"), true);  // Ocultar la columna "id"
-    //ui->tablaUsuarios->show();
-
 }
 
 void In_OutPage::on_buscarUsuariosLineEdit_returnPressed()
 {
+
+    //TODO: FALTA HACER LA COLUMNA QUE DIGA SI INGRESA O EGRESA
+
     QString nombreCompleto = ui->buscarUsuariosLineEdit->text();
+    ui->usuarioLabel->setAlignment(Qt::AlignCenter);
     ui->usuarioLabel->setText(nombreCompleto);
     ui->buscarUsuariosLineEdit->setText("");
     QRegExp separator("( )");
@@ -47,6 +45,11 @@ void In_OutPage::on_buscarUsuariosLineEdit_returnPressed()
     QSqlTableModel *model = PSQLConnector->getModeloUsuarioLocation(nullptr, list.first(), list.last());
     ui->tablaUsuarios->setModel(model);
     ui->tablaUsuarios->setColumnHidden(model->fieldIndex("id"), true);  // Ocultar la columna "id"
+    ui->tablaUsuarios->adjustSize();
+    ui->tablaUsuarios->setColumnWidth(1, 268);
+    ui->tablaUsuarios->setColumnWidth(2, 268);
+    ui->tablaUsuarios->setColumnWidth(3, 268);
+
     ui->tablaUsuarios->show();
 
 
