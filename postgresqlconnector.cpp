@@ -1,5 +1,4 @@
 #include "postgresqlconnector.h"
-//("localhost","AccessIO","postgres","accessio","root");
 
 PostgreSQLConnector::PostgreSQLConnector(const QString& host,           //localhost
                                          const QString& databaseName,   //AccessIO
@@ -18,16 +17,16 @@ PostgreSQLConnector::PostgreSQLConnector(const QString& host,           //localh
     }
     db = QSqlDatabase::addDatabase("QPSQL");
 
-        db.setHostName("localhost");
-        db.setPort(5432);
-        db.setDatabaseName("accessio");
-        db.setUserName("postgres");
-        db.setPassword("root");
-//    db.setHostName(host);
-//    db.setPort(5432);
-//    db.setDatabaseName(databaseName);
-//    db.setUserName(username);
-//    db.setPassword(password);
+    db.setHostName(host);
+    db.setPort(5432);
+    db.setDatabaseName(databaseName);
+    db.setUserName(username);
+    db.setPassword(password);
+//        db.setHostName("localhost");
+//        db.setPort(5432);
+//        db.setDatabaseName("accessio");
+//        db.setUserName("postgres");
+//        db.setPassword("root");
 }
 
 PostgreSQLConnector::~PostgreSQLConnector()
@@ -46,9 +45,7 @@ bool PostgreSQLConnector::isOpen()
 
 void PostgreSQLConnector::cerrarConexionBD()
 {
-
     QSqlDatabase::removeDatabase("accessio"); // correct
-
     db.close();
 }
 
@@ -89,12 +86,25 @@ void PostgreSQLConnector::setDatabaseName(const QString &newDatabaseName)
     databaseName = newDatabaseName;
 }
 
-void PostgreSQLConnector::setSchema(const QString &newSchema)
+bool PostgreSQLConnector::ExistOficinaId( QString OficinaId)
 {
-    schema = newSchema;
-}
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
 
-QString PostgreSQLConnector::getUsernameById(QString Id)
+    QSqlQuery *query = new QSqlQuery(db);
+
+    query->exec("SELECT oficina_id FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + OficinaId + "'");
+    cerrarConexionBD();
+
+    if(query->next()){
+        return true; //Nombre más apellido
+    }
+    else
+        return false;}
+
+
+QString PostgreSQLConnector::getUsernameByUID(QString uid)
 {
     if(!db.isOpen()){
         abrirConexionBD();
@@ -102,17 +112,15 @@ QString PostgreSQLConnector::getUsernameById(QString Id)
 
     QSqlQuery *query = new QSqlQuery();
 
-    query->exec("SELECT * FROM accessio.usuario WHERE uid='" + Id + "'");
-
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Me parece que se podría poner nombre, apellido en lugar de *
     cerrarConexionBD();
 
     if(query->next()){
-    return query->value(1).toString();
+        return (query->value(2).toString()) + (query->value(3).toString());
     }
     else
-    return "";
-
-
+        return "";
 }
 QString PostgreSQLConnector::getUsernameByOficina(QString oficina){
     if(!db.isOpen()){
@@ -121,45 +129,81 @@ QString PostgreSQLConnector::getUsernameByOficina(QString oficina){
 
     QSqlQuery *query = new QSqlQuery(db);
 
-    query->exec("SELECT * FROM accessio.usuario WHERE oficina='" + oficina + "'");
-
-    query->next();
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficina + "'");
     cerrarConexionBD();
 
     if(query->next()){
-        return query->value(1).toString();
+        return (query->value(2).toString()) + " " + (query->value(3).toString()); //Nombre más apellido
     }
     else
-        return "";}
+        return "";
+}
 
 void PostgreSQLConnector::setUsername(const QString &newUsername)
 {
     username = newUsername;
-        return;
 }
 
-QString PostgreSQLConnector::getPassword(QString oficina) {
+QString PostgreSQLConnector::getPassword(QString oficinaId) { //Se podría cambiar el nombre a byOficinaID
     if(!db.isOpen()){
         abrirConexionBD();
     }
 
     QSqlQuery *query = new QSqlQuery(db);
-
-    QString estring;
-    estring = "SELECT * FROM accessio.usuario WHERE oficina='" + oficina + "'";
-    query->exec(estring);
-
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficinaId + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){
-        return query->value(3).toString();
+        return query->value(6).toString();
     }
     else
-        return "";}
+        return "";
+}
 
 void PostgreSQLConnector::setPassword(const QString &newPassword)
 {
     password = newPassword;
 }
 
+unsigned int PostgreSQLConnector::getUsuariosInRoom( QString room ) {
 
+    if (!db.isOpen())
+        abrirConexionBD();
+
+    QSqlQuery *query = new QSqlQuery(db);
+    unsigned int cantidadPersonas = 0;
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE ubicacion = '" + room + "'" );
+
+    while (query->next())
+        cantidadPersonas++;
+    return cantidadPersonas;
+}
+
+QSqlTableModel* PostgreSQLConnector::getModeloUsuarios(QObject *parent)
+{
+    //QSqlQuery *query = new QSqlQuery(db);
+    //query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina='" + oficinaId + "'");
+
+    QSqlTableModel *modelo = new QSqlTableModel(parent, db);
+    modelo->setTable(this->getSchema() + ".usuario");
+    modelo->select(); // Selecciona todos los registros
+    return modelo;
+}
+
+QSqlTableModel* PostgreSQLConnector::getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    QSqlTableModel *modelo = new QSqlTableModel(parent, db);
+    QString uid = "usuario_uid='";
+    modelo->setTable(this->getSchema() + ".usuario_location");
+
+    query->exec("SELECT uid FROM " + this->getSchema() + ".usuario WHERE nombre='" + nombre + "' AND apellido='" + apellido + "'");
+    if(query->next()){
+        uid += query->value(0).toString();
+    }
+    uid += "'";
+    modelo->setFilter(uid);
+    modelo->select(); // Selecciona todos los registros
+    return modelo;
+}

@@ -1,19 +1,13 @@
 #include "edificiopage.h"
 #include "ui_edificiopage.h"
 
-EdificioPage::EdificioPage(QWidget *parent) :
+EdificioPage::EdificioPage(QWidget *parent, QSerialPort* Port, PostgreSQLConnector* PSQLConnector) :
     QWidget(parent),
-    ui(new Ui::EdificioPage)
+    ui(new Ui::EdificioPage),
+    Port(Port),
+    PSQLConnector(PSQLConnector)
 {
-    isUartConnectedFlag = false;
-    initEdificioPage();
-}
-
-EdificioPage::EdificioPage(QWidget *parent, QSerialPort* Port) :
-    QWidget(parent),
-    ui(new Ui::EdificioPage)
-{
-    isUartConnectedFlag = (Port);
+    isUartConnectedFlag = (Port != nullptr);
     initEdificioPage();
 }
 
@@ -25,15 +19,34 @@ EdificioPage::~EdificioPage()
 
 void EdificioPage::initEdificioPage () {
     ui->setupUi(this);
-    QPixmap pix(":/img/accessio_logo.jpeg");
+    this->setFixedSize(1000, 600);
+
+    QPixmap pix(":/img/accessio_logo.png");
+    QPixmap pixSalas(":/img/Salas.png");
     ui->logoLabel->setPixmap(pix.scaled(ui->logoLabel->width(),
                                         ui->logoLabel->height(),
                                         Qt::KeepAspectRatio));
-
-    if (isUartConnectedFlag) {
-        ui->portLabel->setText("CON CONEXION");
-    } else {
-        ui->portLabel->setText("SIN CONEXION");
-    }
-
+    ui->salasLabel->setPixmap(pixSalas.scaled(ui->salasLabel->width(),
+                                              ui->salasLabel->height(),
+                                              Qt::KeepAspectRatio));
+    usuariosInsideBuildingCounter();
 }
+
+void EdificioPage::usuariosInsideBuildingCounter( void ) {
+
+
+    unsigned int contadorOficinas = PSQLConnector->getUsuariosInRoom("O");
+    unsigned int contadorMaquinas = PSQLConnector->getUsuariosInRoom("M");
+    unsigned int contadorHall = PSQLConnector->getUsuariosInRoom("H");
+
+    ui->oficinasCounterLabel->setText(QString::number(contadorOficinas));
+    ui->maquinasCounterLabel->setText(QString::number(contadorMaquinas));
+    ui->hallCounterLabel->setText(QString::number(contadorHall));
+    ui->totalCounterLabel->setText(QString::number(contadorHall + contadorMaquinas + contadorOficinas ));
+}
+
+void EdificioPage::on_reloadPushButton_clicked()
+{
+    usuariosInsideBuildingCounter();
+}
+

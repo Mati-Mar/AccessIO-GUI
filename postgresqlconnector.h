@@ -2,14 +2,13 @@
 #define POSTGRESQLCONNECTOR_H
 
 #include <QString>
+#include <QDebug>
 #include <QSqlDatabase>
+#include <QSqlTableModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
 
-//TODO: Se podría implementar un patrón Singleton para no tener que instanciar siempre esta clase.
-//Una opcion que me gusta más es crearlo como un PostgreService y hacer como un método static la conexión a la base de datos
-//Así se evitaría tener que crear la conexión mil veces. Parece una buena idea
 class PostgreSQLConnector
 {
 public:
@@ -22,9 +21,6 @@ public:
     bool abrirConexionBD();
     void cerrarConexionBD();
     QSqlQuery ejecutarQuery(const QString& query);
-    QSqlError getError();
-    const QString& getSchema();
-
 private:
     QString hostname;
     QString databaseName;
@@ -34,11 +30,11 @@ private:
     QSqlDatabase db;
 
 public:
-    //DEBUG ONLY
-
     bool VerifyPass(QString pass, QString idOficina);
     bool VerifyUUID(QString UUID, QString LugarDeAcceso);
 
+    const QString& getSchema();
+    QSqlError getError();
 
     QString getHostname() const;
     void setHostname(const QString &newHostname);
@@ -47,12 +43,16 @@ public:
     void setSchema(const QString &newSchema);
 
     QString getUsernameByOficina(QString Id);
-    QString getUsernameById(QString Id);
+    QString getUsernameByUID(QString Id);
 
     void setUsername(const QString &newUsername);
     QString getPassword(QString oficina);
     void setPassword(const QString &newPassword);
     bool isOpen();
+    unsigned int getUsuariosInRoom( QString room );
+    QSqlTableModel* getModeloUsuarios(QObject *parent = nullptr);
+    QSqlTableModel* getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido);
+    bool ExistOficinaId( QString OficinaId);
 
 };
 

@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/accessio_logo.jpeg</file>
+        <file>img/accessio_logo.png</file>
+        <file>img/Salas.png</file>
+        <file>img/Salas.jpg</file>
+        <file>img/Relaod.png</file>
+        <file>img/lupa.png</file>
     </qresource>
 </RCC>

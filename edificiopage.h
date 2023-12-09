@@ -16,15 +16,21 @@ class EdificioPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit EdificioPage(QWidget *parent = nullptr);
-    EdificioPage(QWidget *parent = nullptr, QSerialPort* Port = nullptr);
+    EdificioPage(QWidget *parent = nullptr,
+                 QSerialPort* Port = nullptr,
+                 PostgreSQLConnector* PSQLConnector = nullptr);
     ~EdificioPage();
     bool isUartConnectedFlag;
+
+private slots:
+    void on_reloadPushButton_clicked();
 
 private:
     Ui::EdificioPage *ui;
     QSerialPort *Port;
+    PostgreSQLConnector * PSQLConnector;
     void initEdificioPage ();
+    void usuariosInsideBuildingCounter( void );
 };
 
 #endif // EDIFICIOPAGE_H

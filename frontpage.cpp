@@ -1,8 +1,9 @@
 #include "frontpage.h"
 #include "ui_frontpage.h"
 #include "edificiopage.h"
-//#include "usuariospage.h"
-//#include "in_outpage.h"
+#include "in_outpage.h"
+#include "usuariospage.h"
+
 #include <QPixmap>
 #include <QMessageBox>
 
@@ -26,19 +27,6 @@ void FrontPage::on_Port_rx()
             if(RcArr[1]=='P'){
                 handlePas(RcArr);
             }
-            //recieve(QString(RcArr));
-            /*
-            PqslCon->abrirConexionBD();
-            QSqlQuery * query = PqslCon->getUsername("hola");
-            while (query->next()) {
-                QString name = query->value(0).toString();
-                ui->plainTextEdit_2->appendPlainText("name");
-
-                ui->plainTextEdit_2->appendPlainText(name);
-            }
-            PqslCon->cerrarConexionBD();*/
-            //Port->write("#pass,y,juan$");
-
             RcArr.clear();
             break;
         }
@@ -50,29 +38,23 @@ FrontPage::FrontPage(QWidget *parent, QString portname) :
     QMainWindow(parent),
     ui(new Ui::FrontPage)
 {
-
-
-    PqslCon = new PostgreSQLConnector
+    this->PSQLConnector = new PostgreSQLConnector
         ("localhost","accessio","postgres","accessio","root");
-    PqslCon->cerrarConexionBD();
-
-
+    PSQLConnector->cerrarConexionBD();
     isUartConnectedFlag = !(portname == "");
     setPortname(portname);
     initFrontpage();
-    //ui->portLabel->setText(portname);
 }
 
 void FrontPage::initFrontpage() {
     ui->setupUi(this);
-    QPixmap pix(":/img/accessio_logo.jpeg");
+    QPixmap pix(":/img/accessio_logo.png");
     ui->logoLabel->setPixmap(pix.scaled(ui->logoLabel->width(),
                                         ui->logoLabel->height(),
                                         Qt::KeepAspectRatio));
+    ui->logoLabel->setAlignment(Qt::AlignCenter);
     this->setFixedSize(810,310);
-
-        initPort(getPortname());
-    //Si no está conectado el UART entonces es modo sin conexión
+    initPort(getPortname());
 }
 
 void FrontPage::initPort(QString portname) {
@@ -101,26 +83,50 @@ void FrontPage::abrirEdificioPage() {
     if (isUartConnectedFlag)
     {
         //Modo UART
-        EdificioPage *edificioPage = new EdificioPage(nullptr, Port);
+        EdificioPage *edificioPage = new EdificioPage(nullptr, Port, PSQLConnector);
         edificioPage->setWindowTitle("AccessIO");
         edificioPage->show();
-        this->hide();
+        //this->hide();
     } else {
         //Modo SIN CONEXION
-        EdificioPage* edificioPage = new EdificioPage(nullptr, nullptr);
+        EdificioPage* edificioPage = new EdificioPage(nullptr, nullptr, PSQLConnector);
         edificioPage->setWindowTitle("AccessIO");
         edificioPage->show();
-        this->hide();
+        //this->hide();
     }
 }
 
 void FrontPage::abrirUsuariosPage() {
 
+    if (isUartConnectedFlag) {
+        //Modo UART
+        UsuariosPage *usuariosPage= new UsuariosPage(nullptr, Port, PSQLConnector);
+        usuariosPage->setWindowTitle("AccessIO");
+        usuariosPage->show();
+        //this->hide();
+    } else {
+        //Modo SIN CONEXION
+        UsuariosPage *usuariosPage= new UsuariosPage(nullptr, nullptr, PSQLConnector);
+        usuariosPage->setWindowTitle("AccessIO");
+        usuariosPage->show();
+        //this->hide();
+    }
 }
 
 void FrontPage::abrirIn_OutPage() {
-
-
+    if (isUartConnectedFlag) {
+        //Modo UART
+        In_OutPage *in_outPage = new In_OutPage(nullptr, Port, PSQLConnector);
+        in_outPage->setWindowTitle("AccessIO");
+        in_outPage->show();
+        //this->hide();
+    } else {
+        //Modo SIN CONEXION
+        In_OutPage *in_outPage = new In_OutPage(nullptr, nullptr, PSQLConnector);
+        in_outPage->setWindowTitle("AccessIO");
+        in_outPage->show();
+        //this->hide();
+    }
 }
 
 void FrontPage::recieve(QString Rx) {
@@ -150,15 +156,7 @@ void FrontPage::setPortname(const QString &newPortname)
 
 void FrontPage::on_usuariosPushButton_clicked()
 {
-    if(PqslCon->isOpen()){
-        ui->plainTextEdit_2->appendPlainText("esta abierta como tu cola");
-        PqslCon->cerrarConexionBD();
-    }
-    ui->plainTextEdit_2->appendPlainText("Cola");
-    if(PqslCon->abrirConexionBD())
-        ui->plainTextEdit->appendPlainText("true");
-    else
-        ui->plainTextEdit->appendPlainText("false");
+    abrirUsuariosPage();
 }
 void FrontPage::handlePas(QByteArray RcArr){
 
@@ -177,7 +175,7 @@ void FrontPage::handlePas(QByteArray RcArr){
     Pass[3] = RcArr[14];
     ui->plainTextEdit->appendPlainText("oficina: "+ oficina);
 
-    QString secretPas = PqslCon->getPassword(oficina);
+    QString secretPas = PSQLConnector->getPassword(oficina);
     ui->plainTextEdit->appendPlainText("pass: "+ Pass);
     ui->plainTextEdit->appendPlainText("secretPas: "+ secretPas);
     if(Pass == secretPas){
@@ -190,5 +188,10 @@ void FrontPage::handlePas(QByteArray RcArr){
         Port->write(("#pass,N,$"));
 
     }
+}
+
+void FrontPage::on_inoutPushButton_clicked()
+{
+    abrirIn_OutPage();
 }
 

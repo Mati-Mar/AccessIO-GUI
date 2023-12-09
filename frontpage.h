@@ -18,21 +18,18 @@ class FrontPage : public QMainWindow
 public:
     void recieve(QString Rx);
     explicit FrontPage(QWidget *parent = nullptr);
-    //FrontPage(QWidget *parent = nullptr, QSerialPort port);
     explicit FrontPage(QWidget *parent = nullptr, QString portname= "");
     ~FrontPage();
     bool isUartConnectedFlag;
-
-
-
     QString getPortname() const;
     void setPortname(const QString &newPortname);
 
 private slots:
     void on_edificioPushButton_clicked();
     void on_Port_rx();
-
     void on_usuariosPushButton_clicked();
+
+    void on_inoutPushButton_clicked();
 
 private:
     void handlePas(QByteArray RcArr);
@@ -41,11 +38,7 @@ private:
     QSerialPort *Port;
     QString portname;
     QByteArray RcArr;
-
-
-
-
-    PostgreSQLConnector * PqslCon;
+    PostgreSQLConnector * PSQLConnector;
     void initPort(QString portname);
     void initFrontpage();
     void abrirEdificioPage();
