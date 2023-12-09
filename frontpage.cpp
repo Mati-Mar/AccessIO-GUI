@@ -23,9 +23,14 @@ void FrontPage::on_Port_rx()
         Port->read(aux.data(),1);
         RcArr.append(aux.data()[0]);
         if(aux.data()[0]=='$'){
-
+            ui->plainTextEdit_3->appendPlainText(RcArr);
             if(RcArr[1]=='P'){
                 handlePas(RcArr);
+            }
+            if(RcArr[1]=='V'){
+                ui->plainTextEdit->appendPlainText(RcArr.data());
+
+                handleVerif(RcArr);
             }
             RcArr.clear();
             break;
@@ -156,6 +161,7 @@ void FrontPage::setPortname(const QString &newPortname)
 
 void FrontPage::on_usuariosPushButton_clicked()
 {
+    Port->write("#Caca$");
     abrirUsuariosPage();
 }
 void FrontPage::handlePas(QByteArray RcArr){
@@ -189,9 +195,84 @@ void FrontPage::handlePas(QByteArray RcArr){
 
     }
 }
+//#V���,A$
+void FrontPage::handleVerif(QByteArray RcArr){
 
+    QByteArray data;
+    data.append(RcArr.at(2));
+    data.append(RcArr.at(3));
+    data.append(RcArr.at(4));
+    data.append(RcArr.at(5));
+    QString enHexa = data.toHex().data();
+    if(PSQLConnector->existUserByUid(enHexa)){
+        QString passNueva =QString::number(qrand()%6)+
+            QString::number(qrand()%6) +
+            QString::number(qrand()%6)+
+            QString::number(qrand()%6);
+        PSQLConnector->setPasswordByUid(enHexa,passNueva );
+        QString estring = ("#v,y," +PSQLConnector->getPasswordByUid(enHexa)+","+ PSQLConnector->getName(enHexa) + "$");
+        ui->plainTextEdit_2->appendPlainText(estring);
+        Port->write(estring.toUtf8());
+
+        ui->plainTextEdit_2->appendPlainText("Bien!");
+        ui->plainTextEdit_2->appendPlainText(enHexa);
+
+    }
+    else{
+         Port->write("#v,N,1233,juan$");
+        ui->plainTextEdit_2->appendPlainText("Mal!");
+        ui->plainTextEdit_2->appendPlainText(enHexa);
+
+    }
+
+
+
+}
 void FrontPage::on_inoutPushButton_clicked()
 {
     abrirIn_OutPage();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * FALTAN:
+ * - Agregar permisos para las entradas (Qt, y lpc mandarlo)
+ * - Agregar usuario para MaquinaHall
+ * - Probar maquinas de sala y maquinas
+ * - Falta agregar registro de donde anda (Qt)
+ * - OPCIONAL: meter todo en clases aparte como para habilitar la reimplementacion
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

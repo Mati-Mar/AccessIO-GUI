@@ -32,6 +32,7 @@ private slots:
     void on_inoutPushButton_clicked();
 
 private:
+    void handleVerif(QByteArray RcArr);
     void handlePas(QByteArray RcArr);
 
     Ui::FrontPage *ui;
