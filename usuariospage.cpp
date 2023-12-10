@@ -23,14 +23,34 @@ void UsuariosPage::initUsuariosPage( void ) {
                                         ui->logoLabel->height(),
                                         Qt::KeepAspectRatio));
 }
+void UsuariosPage::recieveUID(QString uidd){
+
+    if(PSQLConnector->existUserByUid(uidd)){
+        QMessageBox::critical(this,"Error",QString::fromLatin1("Este usuario ya existe"));
+        return;
+    }
+    ui->plainTextEdit->appendPlainText("La uid es: ");
+    ui->plainTextEdit->appendPlainText(uidd);
+
+    PSQLConnector->CreateUser(uidd,Acceso,Nombre,Apellido,Edad,Oficina);
+
+
+}
+
 
 void UsuariosPage::on_Commit_clicked()
-{
-        QString Acceso = ui->AccesosInp->toPlainText();
-        QString Nombre = ui->NombreInp->toPlainText();
-        QString Apellido = ui->ApellidoInp->toPlainText();
-        QString Edad = ui->EdadInp->toPlainText();
-          QString Oficina= ui->OficinaInp->toPlainText();
+{       uid.clear();
+        Acceso.clear();
+        Nombre.clear();
+        Apellido.clear();
+        Edad.clear();
+        Oficina.clear();
+
+        Acceso = ui->AccesosInp->toPlainText();
+        Nombre = ui->NombreInp->toPlainText();
+        Apellido = ui->ApellidoInp->toPlainText();
+        Edad = ui->EdadInp->toPlainText();
+        Oficina= ui->OficinaInp->toPlainText();
 
     if(Acceso.isEmpty()|| Nombre.isEmpty()|| Apellido.isEmpty() ||Edad.isEmpty() ||Oficina.isEmpty()){
         QMessageBox::critical(this,"Error",QString::fromLatin1("Faltan campos por rellenar!"));
@@ -44,8 +64,6 @@ void UsuariosPage::on_Commit_clicked()
 
         return;
     }
-    QString estring;
-    estring += "#";
     Port->write("#Add$");
 }
 

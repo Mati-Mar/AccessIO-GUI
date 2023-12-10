@@ -54,6 +54,9 @@ public:
     bool existUserByUid(QString uid);
     QString     getName(QString uid);
 
+
+    void     CreateUser(QString uid,QString Acceso,QString Nombre,QString Apellido,QString Edad,QString Oficina);
+
     unsigned int getUsuariosInRoom( QString room );
     QSqlTableModel* getModeloUsuarios(QObject *parent = nullptr);
     QSqlTableModel* getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido);

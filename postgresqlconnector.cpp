@@ -28,6 +28,46 @@ PostgreSQLConnector::~PostgreSQLConnector()
 {
     cerrarConexionBD();
 }
+
+/*    query->exec("INSERT INTO contacts(uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion)" +
+                " VALUES(250, 'Anderson', 'Jane', DEFAULT);");*/
+
+void PostgreSQLConnector::CreateUser(QString uid,QString Acceso,QString Nombre,QString Apellido,QString Edad,QString Oficina){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    //QSqlQuery *query = new QSqlQuery(db);
+    QSqlQuery *guardar_s2= new QSqlQuery(db);
+    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion) "
+                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi)");
+
+
+    guardar_s2->bindValue(":uid", uid);
+    guardar_s2->bindValue(":Nombre", Nombre);
+    guardar_s2->bindValue(":Apellido", Apellido);
+    guardar_s2->bindValue(":edad", Edad.toInt());
+    guardar_s2->bindValue(":Acceso", Acceso);
+    guardar_s2->bindValue(":pass", "0000");
+    guardar_s2->bindValue(":Oficina", Oficina);
+    guardar_s2->bindValue(":ubi", "A");
+
+    //query->exec("INSERT INTO " + this->getSchema() + ".usuario (uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion) VALUES('" + uid +"', '"+ Nombre +"', '"+ Apellido +"', 21, '" + Acceso+"', '0000', '" + Oficina + "', 'A');");
+
+    //query->exec("INSERT INTO accessio.usuario (uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion)VALUES('uid', 'Nombre', 'Apellido', 12, 'Acceso', '0000', 'Oficina', 'A');");
+    if(guardar_s2->exec( ))
+    {
+        qDebug()<<"13.Los datos del parte se han guardado en la Solicitud de Trabajo";
+    }
+    else
+    {
+        qDebug()<<"13.ERROR. Los datos del parte no se han guardado en la Solicitud de Trabajo";
+        qDebug()<<"13.ERROR:"<<guardar_s2->lastError();
+    }    cerrarConexionBD();
+
+    return;
+}
+
 bool PostgreSQLConnector::existUserByUid(QString uid){
 
     if(!db.isOpen()){

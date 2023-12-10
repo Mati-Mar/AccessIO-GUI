@@ -2,7 +2,6 @@
 #include "ui_frontpage.h"
 #include "edificiopage.h"
 #include "in_outpage.h"
-#include "usuariospage.h"
 
 #include <QPixmap>
 #include <QMessageBox>
@@ -23,6 +22,7 @@ void FrontPage::on_Port_rx()
         Port->read(aux.data(),1);
         RcArr.append(aux.data()[0]);
         if(aux.data()[0]=='$'){
+
             ui->plainTextEdit_3->appendPlainText(RcArr);
             if(RcArr[1]=='P'){
                 handlePas(RcArr);
@@ -31,6 +31,15 @@ void FrontPage::on_Port_rx()
                 ui->plainTextEdit->appendPlainText(RcArr.data());
 
                 handleVerif(RcArr);
+            }
+            if(RcArr[1]=='a'){
+                QByteArray dat;
+                dat[0] = RcArr[5];
+                dat[1] = RcArr[6];
+                dat[2] = RcArr[7];
+                dat[3] = RcArr[8];
+
+                usuariosPage->recieveUID(dat.toHex().data());
             }
             RcArr.clear();
             break;
@@ -43,7 +52,7 @@ FrontPage::FrontPage(QWidget *parent, QString portname) :
     ui(new Ui::FrontPage)
 {
     this->PSQLConnector = new PostgreSQLConnector
-        ("localhost","AccessIO","postgres","accessio","root");
+        ("localhost","accessio","postgres","accessio","root");
     PSQLConnector->cerrarConexionBD();
     isUartConnectedFlag = !(portname == "");
     setPortname(portname);
@@ -94,7 +103,7 @@ void FrontPage::abrirEdificioPage() {
 }
 
 void FrontPage::abrirUsuariosPage() {
-    UsuariosPage *usuariosPage;
+
     if (isUartConnectedFlag)
         usuariosPage = new UsuariosPage(nullptr, Port, PSQLConnector); //Modo UART
     else
