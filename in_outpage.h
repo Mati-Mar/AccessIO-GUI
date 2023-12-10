@@ -35,6 +35,8 @@ private:
     void initIn_OutPage( void );
     QSerialPort *Port;
     PostgreSQLConnector * PSQLConnector;
+
+    QString ubicacionUsuarioAMostrar (QString &ubicacion);
 };
 
 #endif // IN_OUTPAGE_H

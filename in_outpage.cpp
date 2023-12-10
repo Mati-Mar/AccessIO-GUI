@@ -25,34 +25,29 @@ void In_OutPage::initIn_OutPage( void ) {
     ui->lupaLabel->setPixmap(lupaPix.scaled(ui->lupaLabel->width(),
                                         ui->lupaLabel->height(),
                                         Qt::KeepAspectRatio));
+    ui->buscarUsuariosLineEdit->setPlaceholderText("Nombre Apellido");
 
-    if (!PSQLConnector->isOpen())
-        PSQLConnector->abrirConexionBD();
+    ui->tablaUsuarios->setFixedSize(819, 379);
+
 }
 
 void In_OutPage::on_buscarUsuariosLineEdit_returnPressed()
 {
-
-    //TODO: FALTA HACER LA COLUMNA QUE DIGA SI INGRESA O EGRESA
-
     QString nombreCompleto = ui->buscarUsuariosLineEdit->text();
     ui->usuarioLabel->setAlignment(Qt::AlignCenter);
     ui->usuarioLabel->setText(nombreCompleto);
     ui->buscarUsuariosLineEdit->setText("");
     QRegExp separator("( )");
-    QStringList list = nombreCompleto.split(separator);
-
+    QStringList list = nombreCompleto.toLower().split(separator);
     QSqlTableModel *model = PSQLConnector->getModeloUsuarioLocation(nullptr, list.first(), list.last());
+
+    ui->tablaUsuarios->reset();
     ui->tablaUsuarios->setModel(model);
     ui->tablaUsuarios->setColumnHidden(model->fieldIndex("id"), true);  // Ocultar la columna "id"
-    ui->tablaUsuarios->adjustSize();
     ui->tablaUsuarios->setColumnWidth(1, 268);
     ui->tablaUsuarios->setColumnWidth(2, 268);
     ui->tablaUsuarios->setColumnWidth(3, 268);
+    ui->tablaUsuarios->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tablaUsuarios->show();
-
-
-
 }
-

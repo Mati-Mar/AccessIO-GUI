@@ -37,7 +37,7 @@ FrontPage::FrontPage(QWidget *parent, QString portname) :
     ui(new Ui::FrontPage)
 {
     this->PSQLConnector = new PostgreSQLConnector
-        ("localhost","accessio","postgres","accessio","root");
+        ("localhost","AccessIO","postgres","accessio","root");
     PSQLConnector->cerrarConexionBD();
     isUartConnectedFlag = !(portname == "");
     setPortname(portname);
