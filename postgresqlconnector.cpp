@@ -336,7 +336,6 @@ QString PostgreSQLConnector::getAccessByUid(QString uid){
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("SELECT acceso FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
-    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){
@@ -347,14 +346,13 @@ QString PostgreSQLConnector::getAccessByUid(QString uid){
 
 }
 
-QString     PostgreSQLConnector::getUbicacionByUid(QString uid){
+QString PostgreSQLConnector::getUbicacionByUid(QString uid){
     if(!db.isOpen()){
         abrirConexionBD();
     }
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("SELECT ubicacion FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
-    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){
@@ -364,14 +362,13 @@ QString     PostgreSQLConnector::getUbicacionByUid(QString uid){
         return "";
 
 }
-QString     PostgreSQLConnector::setUbicacionByUid(QString uid,QString ubic){
+QString PostgreSQLConnector::setUbicacionByUid(QString uid,QString ubic){
     if(!db.isOpen()){
         abrirConexionBD();
     }
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("UPDATE " + this->getSchema() + ".usuario  SET ubicacion='" + ubic +"' WHERE uid='" + uid + "'");
-    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
     if(query->next()){
@@ -382,16 +379,23 @@ QString     PostgreSQLConnector::setUbicacionByUid(QString uid,QString ubic){
 
 }
 
+void PostgreSQLConnector::setMovimientosUsuario(QString uid , QString ubicacion){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
 
+    QString ubicacionFormateada;
 
+    if ( ubicacion == 'O')
+        ubicacionFormateada = "Sala de Oficinas";
+    else if (ubicacion == 'M')
+        ubicacionFormateada = "Sala de Maquinas";
+    else if (ubicacion == 'H' )
+        ubicacionFormateada = "Hall de Entrada";
+    else
+        ubicacionFormateada = 'Salio';
 
-
-
-
-
-
-
-
-
-
-
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("INSERT INTO " + this->getSchema() + ".usuario_location (usuario_uid, ubicacion) VALUES ('" + uid + "','" + ubicacionFormateada + "')");
+    cerrarConexionBD();
+}

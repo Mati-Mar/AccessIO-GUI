@@ -66,6 +66,7 @@ public:
     QSqlTableModel* getModeloUsuarios(QObject *parent = nullptr);
     QSqlTableModel* getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido);
     bool ExistOficinaId( QString OficinaId);
+    void setMovimientosUsuario(QString uid , QString ubicacion);
 
 };
 

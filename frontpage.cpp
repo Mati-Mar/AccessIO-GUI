@@ -221,33 +221,31 @@ void FrontPage::handleVerif(QByteArray RcArr){
 
         QString estring = ("#v,y," +passNueva+","+ PSQLConnector->getName(enHexa) + "$");
         Port->write(estring.toUtf8());
+
         if(PSQLConnector->getUbicacionByUid(enHexa) == RcArr.at(7)){
             if(RcArr.at(7) == 'O' ||RcArr.at(7) == 'M'||RcArr.at(7) == 'A'){
+                //Entrando al Hall
                 PSQLConnector->setUbicacionByUid(enHexa,"H");
-
+                PSQLConnector->setMovimientosUsuario(enHexa, 'H');
             }else{
+                //Saliendo del edifico
                 PSQLConnector->setUbicacionByUid(enHexa,"A");
-
+                PSQLConnector->setMovimientosUsuario(enHexa, 'A');
             }
-
-
-
         }else{
+            //Entrando a la habitacion
             PSQLConnector->setUbicacionByUid(enHexa,QString(QChar::fromLatin1(RcArr.at(7))));
+            PSQLConnector->setMovimientosUsuario(enHexa, QString(QChar::fromLatin1(RcArr.at(7))));
         }
 
         PSQLConnector->setPasswordByUid(enHexa,passNueva );
-
-
-
         ui->plainTextEdit_2->appendPlainText(estring);
-
         ui->plainTextEdit_2->appendPlainText("Bien!");
         ui->plainTextEdit_2->appendPlainText(enHexa);
 
     }
     else{
-         Port->write("#v,N,1233,juan$");
+        Port->write("#v,N,1233,juan$");
         ui->plainTextEdit_2->appendPlainText("Mal!");
         ui->plainTextEdit_2->appendPlainText(enHexa);
 
