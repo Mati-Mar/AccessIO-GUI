@@ -154,6 +154,29 @@
     <string>Commit</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="Pisar">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>280</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pisar Usuario</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="plainTextEdit">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>440</y>
+     <width>104</width>
+     <height>70</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

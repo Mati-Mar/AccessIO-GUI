@@ -28,6 +28,64 @@ PostgreSQLConnector::~PostgreSQLConnector()
 {
     cerrarConexionBD();
 }
+
+/*    query->exec("INSERT INTO contacts(uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion)" +
+                " VALUES(250, 'Anderson', 'Jane', DEFAULT);");*/
+
+void PostgreSQLConnector::CreateUser(QString uid,QString Acceso,QString Nombre,QString Apellido,QString Edad,QString Oficina){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    //QSqlQuery *query = new QSqlQuery(db);
+    QSqlQuery *guardar_s2= new QSqlQuery(db);
+    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion) "
+                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi)");
+
+
+    guardar_s2->bindValue(":uid", uid);
+    guardar_s2->bindValue(":Nombre", Nombre);
+    guardar_s2->bindValue(":Apellido", Apellido);
+    guardar_s2->bindValue(":edad", Edad.toInt());
+    guardar_s2->bindValue(":Acceso", Acceso);
+    guardar_s2->bindValue(":pass", "0000");
+    guardar_s2->bindValue(":Oficina", Oficina);
+    guardar_s2->bindValue(":ubi", "A");
+
+    //query->exec("INSERT INTO " + this->getSchema() + ".usuario (uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion) VALUES('" + uid +"', '"+ Nombre +"', '"+ Apellido +"', 21, '" + Acceso+"', '0000', '" + Oficina + "', 'A');");
+
+    //query->exec("INSERT INTO accessio.usuario (uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion)VALUES('uid', 'Nombre', 'Apellido', 12, 'Acceso', '0000', 'Oficina', 'A');");
+    if(guardar_s2->exec( ))
+    {
+    }
+    else
+    {
+    }    cerrarConexionBD();
+
+    return;
+}
+
+QString PostgreSQLConnector::getOficinaByUUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+
+    query->exec("SELECT oficina_id FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString(); //Nombre más apellido
+    }
+    else
+        return "";
+
+
+}
+
+
+
 bool PostgreSQLConnector::existUserByUid(QString uid){
 
     if(!db.isOpen()){
@@ -213,7 +271,7 @@ void PostgreSQLConnector::setPasswordByUid(QString uid, QString pass) { //Se pod
     }
 
     QSqlQuery *query = new QSqlQuery(db);
-    query->exec("UPDATE " + this->getSchema() + ".usuario  SET secret_pass=" + pass +" WHERE uid='" + uid + "'");
+    query->exec("UPDATE " + this->getSchema() + ".usuario  SET secret_pass='" + pass +"' WHERE uid='" + uid + "'");
     //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
@@ -269,3 +327,71 @@ QSqlTableModel* PostgreSQLConnector::getModeloUsuarioLocation(QObject *parent, Q
     modelo->select(); // Selecciona todos los registros
     return modelo;
 }
+
+
+QString PostgreSQLConnector::getAccessByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("SELECT acceso FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+
+QString     PostgreSQLConnector::getUbicacionByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("SELECT ubicacion FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+QString     PostgreSQLConnector::setUbicacionByUid(QString uid,QString ubic){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("UPDATE " + this->getSchema() + ".usuario  SET ubicacion='" + ubic +"' WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

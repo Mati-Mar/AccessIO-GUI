@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QByteArray>
+#include "usuariospage.h"
 
 #include "postgresqlconnector.h"
 
@@ -33,7 +34,7 @@ private slots:
 private:
     void handleVerif(QByteArray RcArr);
     void handlePas(QByteArray RcArr);
-
+    UsuariosPage *usuariosPage;
     Ui::FrontPage *ui;
     QSerialPort *Port;
     QString portname;
@@ -41,6 +42,7 @@ private:
     PostgreSQLConnector * PSQLConnector;
     void initPort(QString portname);
     void initFrontpage();
+
     void abrirEdificioPage();
     void abrirUsuariosPage();
     void abrirIn_OutPage();
