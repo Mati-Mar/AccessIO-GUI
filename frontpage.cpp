@@ -19,7 +19,7 @@ FrontPage::FrontPage(QWidget *parent) :
 void FrontPage::on_Port_rx()
 {
     QByteArray aux;
-    while(Port->bytesAvailable()){
+    while(Port->bytesAvailable()) {
         Port->read(aux.data(),1);
         RcArr.append(aux.data()[0]);
         if(aux.data()[0]=='$'){
@@ -36,15 +36,14 @@ void FrontPage::on_Port_rx()
             break;
         }
     }
-
-
 }
+
 FrontPage::FrontPage(QWidget *parent, QString portname) :
     QMainWindow(parent),
     ui(new Ui::FrontPage)
 {
     this->PSQLConnector = new PostgreSQLConnector
-        ("localhost","accessio","postgres","accessio","root");
+        ("localhost","AccessIO","postgres","accessio","root");
     PSQLConnector->cerrarConexionBD();
     isUartConnectedFlag = !(portname == "");
     setPortname(portname);
@@ -84,54 +83,36 @@ void FrontPage::initPort(QString portname) {
 }
 
 void FrontPage::abrirEdificioPage() {
-    //Puede ser que acá la flag no sea necesaria porque si portname es "" entonces ya se que es sin conexión
+    EdificioPage *edificioPage;
     if (isUartConnectedFlag)
-    {
-        //Modo UART
-        EdificioPage *edificioPage = new EdificioPage(nullptr, Port, PSQLConnector);
-        edificioPage->setWindowTitle("AccessIO");
-        edificioPage->show();
-        //this->hide();
-    } else {
-        //Modo SIN CONEXION
-        EdificioPage* edificioPage = new EdificioPage(nullptr, nullptr, PSQLConnector);
-        edificioPage->setWindowTitle("AccessIO");
-        edificioPage->show();
-        //this->hide();
-    }
+        edificioPage = new EdificioPage(nullptr, Port, PSQLConnector); //Modo UART
+    else
+        edificioPage = new EdificioPage(nullptr, nullptr, PSQLConnector); //Modo SIN CONEXION
+    edificioPage->setWindowTitle("AccessIO");
+    edificioPage->show();
+//    this->hide();
 }
 
 void FrontPage::abrirUsuariosPage() {
-
-    if (isUartConnectedFlag) {
-        //Modo UART
-        UsuariosPage *usuariosPage= new UsuariosPage(nullptr, Port, PSQLConnector);
-        usuariosPage->setWindowTitle("AccessIO");
-        usuariosPage->show();
-        //this->hide();
-    } else {
-        //Modo SIN CONEXION
-        UsuariosPage *usuariosPage= new UsuariosPage(nullptr, nullptr, PSQLConnector);
-        usuariosPage->setWindowTitle("AccessIO");
-        usuariosPage->show();
-        //this->hide();
-    }
+    UsuariosPage *usuariosPage;
+    if (isUartConnectedFlag)
+        usuariosPage = new UsuariosPage(nullptr, Port, PSQLConnector); //Modo UART
+    else
+        usuariosPage = new UsuariosPage(nullptr, nullptr, PSQLConnector); //Modo SIN CONEXION
+    usuariosPage->setWindowTitle("AccessIO");
+    usuariosPage->show();
+//    this->hide();
 }
 
 void FrontPage::abrirIn_OutPage() {
-    if (isUartConnectedFlag) {
-        //Modo UART
-        In_OutPage *in_outPage = new In_OutPage(nullptr, Port, PSQLConnector);
-        in_outPage->setWindowTitle("AccessIO");
-        in_outPage->show();
-        //this->hide();
-    } else {
-        //Modo SIN CONEXION
-        In_OutPage *in_outPage = new In_OutPage(nullptr, nullptr, PSQLConnector);
-        in_outPage->setWindowTitle("AccessIO");
-        in_outPage->show();
-        //this->hide();
-    }
+    In_OutPage *in_outPage;
+    if (isUartConnectedFlag)
+        in_outPage = new In_OutPage(nullptr, Port, PSQLConnector); //Modo UART
+    else
+        in_outPage = new In_OutPage(nullptr, nullptr, PSQLConnector); //Modo SIN CONEXION
+    in_outPage->setWindowTitle("AccessIO");
+    in_outPage->show();
+//    this->hide();
 }
 
 void FrontPage::recieve(QString Rx) {
@@ -140,6 +121,8 @@ void FrontPage::recieve(QString Rx) {
 
 FrontPage::~FrontPage()
 {
+    if (PSQLConnector->isOpen())
+        PSQLConnector->cerrarConexionBD();
     delete Port;
     delete ui;
 }
@@ -164,6 +147,7 @@ void FrontPage::on_usuariosPushButton_clicked()
     Port->write("#Caca$");
     abrirUsuariosPage();
 }
+
 void FrontPage::handlePas(QByteArray RcArr){
 
 
@@ -228,51 +212,8 @@ void FrontPage::handleVerif(QByteArray RcArr){
 
 
 }
+
 void FrontPage::on_inoutPushButton_clicked()
 {
     abrirIn_OutPage();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * FALTAN:
- * - Agregar permisos para las entradas (Qt, y lpc mandarlo)
- * - Agregar usuario para MaquinaHall
- * - Probar maquinas de sala y maquinas
- * - Falta agregar registro de donde anda (Qt)
- * - OPCIONAL: meter todo en clases aparte como para habilitar la reimplementacion
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

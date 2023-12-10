@@ -22,11 +22,6 @@ PostgreSQLConnector::PostgreSQLConnector(const QString& host,           //localh
     db.setDatabaseName(databaseName);
     db.setUserName(username);
     db.setPassword(password);
-//        db.setHostName("localhost");
-//        db.setPort(5432);
-//        db.setDatabaseName("accessio");
-//        db.setUserName("postgres");
-//        db.setPassword("root");
 }
 
 PostgreSQLConnector::~PostgreSQLConnector()
@@ -185,12 +180,11 @@ QString PostgreSQLConnector::getPassword(QString oficinaId) { //Se podría cambi
     }
 
     QSqlQuery *query = new QSqlQuery(db);
-    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficinaId + "'");
-    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    query->exec("SELECT secret_pass FROM " + this->getSchema() + ".usuario WHERE oficina_id='" + oficinaId + "'");
     cerrarConexionBD();
 
     if(query->next()){
-        return query->value(6).toString();
+        return query->value(0).toString();
     }
     else
         return "";
@@ -257,6 +251,9 @@ QSqlTableModel* PostgreSQLConnector::getModeloUsuarios(QObject *parent)
 
 QSqlTableModel* PostgreSQLConnector::getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido)
 {
+    if (!db.isOpen())
+        abrirConexionBD();
+
     QSqlQuery *query = new QSqlQuery(db);
     QSqlTableModel *modelo = new QSqlTableModel(parent, db);
     QString uid = "usuario_uid='";
@@ -268,6 +265,7 @@ QSqlTableModel* PostgreSQLConnector::getModeloUsuarioLocation(QObject *parent, Q
     }
     uid += "'";
     modelo->setFilter(uid);
+    modelo->sort(modelo->fieldIndex("hora"), Qt::SortOrder::AscendingOrder);
     modelo->select(); // Selecciona todos los registros
     return modelo;
 }
