@@ -32,6 +32,7 @@ void UsuariosPage::recieveUID(QString uidd){
     ui->plainTextEdit->appendPlainText("La uid es: ");
     ui->plainTextEdit->appendPlainText(uidd);
 
+
     PSQLConnector->CreateUser(uidd,Acceso,Nombre,Apellido,Edad,Oficina);
 
 

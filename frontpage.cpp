@@ -38,8 +38,8 @@ void FrontPage::on_Port_rx()
                 dat[1] = RcArr[6];
                 dat[2] = RcArr[7];
                 dat[3] = RcArr[8];
-
-                usuariosPage->recieveUID(dat.toHex().data());
+                if(dat[0] != 'X')
+                    usuariosPage->recieveUID(dat.toHex().data());
             }
             RcArr.clear();
             break;
@@ -192,20 +192,53 @@ void FrontPage::handlePas(QByteArray RcArr){
 void FrontPage::handleVerif(QByteArray RcArr){
 
     QByteArray data;
+    QString passNueva;
     data.append(RcArr.at(2));
     data.append(RcArr.at(3));
     data.append(RcArr.at(4));
     data.append(RcArr.at(5));
     QString enHexa = data.toHex().data();
-    if(PSQLConnector->existUserByUid(enHexa)){
-        QString passNueva =QString::number(qrand()%6)+
-            QString::number(qrand()%6) +
-            QString::number(qrand()%6)+
-            QString::number(qrand()%6);
-        PSQLConnector->setPasswordByUid(enHexa,passNueva );
-        QString estring = ("#v,y," +PSQLConnector->getPasswordByUid(enHexa)+","+ PSQLConnector->getName(enHexa) + "$");
-        ui->plainTextEdit_2->appendPlainText(estring);
+    QString Ofi = PSQLConnector->getOficinaByUUid(enHexa);
+    //if()
+
+//""  noC   mal
+//aa  noC   mal
+//""  SiC   mal
+//aa  SiC   biem
+    if(!Ofi.isEmpty()  && PSQLConnector->getAccessByUid(enHexa).contains(RcArr.at(7))){
+        if(Ofi.at(0) == "X"){
+
+            passNueva = "XXXX";
+        }else{
+            int num =qrand();
+            passNueva =QString::number((num/2)%6)+
+                        QString::number((num/3)%6) +
+                        QString::number((num/10)%6)+
+                        QString::number((num)%6);
+        }
+
+        QString estring = ("#v,y," +passNueva+","+ PSQLConnector->getName(enHexa) + "$");
         Port->write(estring.toUtf8());
+        if(PSQLConnector->getUbicacionByUid(enHexa) == RcArr.at(7)){
+            if(RcArr.at(7) == 'O' ||RcArr.at(7) == 'M'||RcArr.at(7) == 'A'){
+                PSQLConnector->setUbicacionByUid(enHexa,"H");
+
+            }else{
+                PSQLConnector->setUbicacionByUid(enHexa,"A");
+
+            }
+
+
+
+        }else{
+            PSQLConnector->setUbicacionByUid(enHexa,QString(QChar::fromLatin1(RcArr.at(7))));
+        }
+
+        PSQLConnector->setPasswordByUid(enHexa,passNueva );
+
+
+
+        ui->plainTextEdit_2->appendPlainText(estring);
 
         ui->plainTextEdit_2->appendPlainText("Bien!");
         ui->plainTextEdit_2->appendPlainText(enHexa);

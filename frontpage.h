@@ -44,6 +44,7 @@ private:
     PostgreSQLConnector * PSQLConnector;
     void initPort(QString portname);
     void initFrontpage();
+
     void abrirEdificioPage();
     void abrirUsuariosPage();
     void abrirIn_OutPage();

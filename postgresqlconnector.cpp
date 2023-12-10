@@ -57,16 +57,34 @@ void PostgreSQLConnector::CreateUser(QString uid,QString Acceso,QString Nombre,Q
     //query->exec("INSERT INTO accessio.usuario (uid, nombre, apellido, edad, acceso, secret_pass, oficina_id, ubicacion)VALUES('uid', 'Nombre', 'Apellido', 12, 'Acceso', '0000', 'Oficina', 'A');");
     if(guardar_s2->exec( ))
     {
-        qDebug()<<"13.Los datos del parte se han guardado en la Solicitud de Trabajo";
     }
     else
     {
-        qDebug()<<"13.ERROR. Los datos del parte no se han guardado en la Solicitud de Trabajo";
-        qDebug()<<"13.ERROR:"<<guardar_s2->lastError();
     }    cerrarConexionBD();
 
     return;
 }
+
+QString PostgreSQLConnector::getOficinaByUUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+
+    query->exec("SELECT oficina_id FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString(); //Nombre más apellido
+    }
+    else
+        return "";
+
+
+}
+
+
 
 bool PostgreSQLConnector::existUserByUid(QString uid){
 
@@ -253,7 +271,7 @@ void PostgreSQLConnector::setPasswordByUid(QString uid, QString pass) { //Se pod
     }
 
     QSqlQuery *query = new QSqlQuery(db);
-    query->exec("UPDATE " + this->getSchema() + ".usuario  SET secret_pass=" + pass +" WHERE uid='" + uid + "'");
+    query->exec("UPDATE " + this->getSchema() + ".usuario  SET secret_pass='" + pass +"' WHERE uid='" + uid + "'");
     //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
     cerrarConexionBD();
 
@@ -309,3 +327,71 @@ QSqlTableModel* PostgreSQLConnector::getModeloUsuarioLocation(QObject *parent, Q
     modelo->select(); // Selecciona todos los registros
     return modelo;
 }
+
+
+QString PostgreSQLConnector::getAccessByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("SELECT acceso FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+
+QString     PostgreSQLConnector::getUbicacionByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("SELECT ubicacion FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+QString     PostgreSQLConnector::setUbicacionByUid(QString uid,QString ubic){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("UPDATE " + this->getSchema() + ".usuario  SET ubicacion='" + ubic +"' WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(0).toString();
+    }
+    else
+        return "";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

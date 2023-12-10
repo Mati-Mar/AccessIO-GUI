@@ -46,6 +46,8 @@ public:
     QString getUsernameByUID(QString Id);
     void setPasswordByUid(QString uid, QString pass);//Se podría cambiar el nombre a byOficinaID
     QString getPasswordByUid(QString uid); //Se podría cambiar el nombre a byOficinaID
+    QString getOficinaByUUid(QString uid);
+    QString getAccessByUid(QString UID);
 
     void setUsername(const QString &newUsername);
     QString getPassword(QString oficina);
@@ -53,6 +55,8 @@ public:
     bool isOpen();
     bool existUserByUid(QString uid);
     QString     getName(QString uid);
+    QString     getUbicacionByUid(QString uid);
+    QString     setUbicacionByUid(QString uid,QString ubic);
 
 
     void     CreateUser(QString uid,QString Acceso,QString Nombre,QString Apellido,QString Edad,QString Oficina);
