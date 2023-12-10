@@ -26,156 +26,113 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="NombreInp">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>80</y>
-     <width>181</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="ApellidoInp">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>150</y>
-     <width>181</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="AccesosInp">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>230</y>
-     <width>181</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="NombreLbl">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>80</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Nombre</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="ApellidoLbl">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>160</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Apellido</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="AccesosLbl">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>230</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Accesos</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="OficinaInp">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>350</y>
-     <width>181</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="OficinaLbl">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>360</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Oficina</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="EdadInp">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>60</y>
-     <width>181</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="EdadLbl">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>80</y>
-     <width>67</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Edad</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="Commit">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>320</y>
-     <width>89</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Commit</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="Pisar">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>280</y>
-     <width>121</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Pisar Usuario</string>
-   </property>
-  </widget>
   <widget class="QPlainTextEdit" name="plainTextEdit">
    <property name="geometry">
     <rect>
-     <x>520</x>
-     <y>440</y>
+     <x>870</x>
+     <y>180</y>
      <width>104</width>
      <height>70</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>40</y>
+     <width>731</width>
+     <height>376</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="4" column="0">
+     <widget class="QLabel" name="OficinaLbl">
+      <property name="text">
+       <string>Oficina</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPlainTextEdit" name="OficinaInp"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPlainTextEdit" name="AccesosInp"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPlainTextEdit" name="NombreInp"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="NombreLbl">
+      <property name="text">
+       <string>Nombre</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPlainTextEdit" name="ApellidoInp"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="ApellidoLbl">
+      <property name="text">
+       <string>Apellido</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="Commit">
+      <property name="text">
+       <string>Agregar Usuario</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="EdadLbl">
+      <property name="text">
+       <string>Edad</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QPlainTextEdit" name="EdadInp"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="AccesosLbl">
+      <property name="text">
+       <string>Accesos</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>500</y>
+     <width>731</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="1">
+     <widget class="QPlainTextEdit" name="EliminarInp"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="EdadLbl_2">
+      <property name="text">
+       <string>Uid</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="Commit_2">
+      <property name="text">
+       <string>Eliminar Usuario</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

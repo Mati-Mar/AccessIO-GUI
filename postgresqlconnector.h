@@ -58,6 +58,7 @@ public:
     QString     getName(QString uid);
     QString     getUbicacionByUid(QString uid);
     QString     setUbicacionByUid(QString uid,QString ubic);
+    void deleteUserByUid(QString uid);
 
 
     void     CreateUser(QString uid,QString Acceso,QString Nombre,QString Apellido,QString Edad,QString Oficina);

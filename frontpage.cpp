@@ -226,11 +226,11 @@ void FrontPage::handleVerif(QByteArray RcArr){
             if(RcArr.at(7) == 'O' ||RcArr.at(7) == 'M'||RcArr.at(7) == 'A'){
                 //Entrando al Hall
                 PSQLConnector->setUbicacionByUid(enHexa,"H");
-                PSQLConnector->setMovimientosUsuario(enHexa, 'H');
+                PSQLConnector->setMovimientosUsuario(enHexa, "H");
             }else{
                 //Saliendo del edifico
                 PSQLConnector->setUbicacionByUid(enHexa,"A");
-                PSQLConnector->setMovimientosUsuario(enHexa, 'A');
+                PSQLConnector->setMovimientosUsuario(enHexa, "A");
             }
         }else{
             //Entrando a la habitacion

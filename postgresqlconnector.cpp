@@ -386,16 +386,43 @@ void PostgreSQLConnector::setMovimientosUsuario(QString uid , QString ubicacion)
 
     QString ubicacionFormateada;
 
-    if ( ubicacion == 'O')
+    if ( ubicacion == "O")
         ubicacionFormateada = "Sala de Oficinas";
-    else if (ubicacion == 'M')
+    else if (ubicacion == "M")
         ubicacionFormateada = "Sala de Maquinas";
-    else if (ubicacion == 'H' )
+    else if (ubicacion == "H" )
         ubicacionFormateada = "Hall de Entrada";
     else
-        ubicacionFormateada = 'Salio';
+        ubicacionFormateada = "Salio";
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("INSERT INTO " + this->getSchema() + ".usuario_location (usuario_uid, ubicacion) VALUES ('" + uid + "','" + ubicacionFormateada + "')");
     cerrarConexionBD();
 }
+
+void PostgreSQLConnector::deleteUserByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("DELETE FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    cerrarConexionBD();
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
