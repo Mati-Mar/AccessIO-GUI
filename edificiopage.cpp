@@ -13,6 +13,8 @@ EdificioPage::EdificioPage(QWidget *parent, QSerialPort* Port, PostgreSQLConnect
 
 EdificioPage::~EdificioPage()
 {
+    if (PSQLConnector->isOpen())
+        PSQLConnector->cerrarConexionBD();
     delete Port;
     delete ui;
 }

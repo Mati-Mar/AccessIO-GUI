@@ -61,7 +61,7 @@
       <item>
        <widget class="QLabel" name="maquinasTextLabel">
         <property name="text">
-         <string>En la Sala de Máquinas hay: </string>
+         <string>En la Sala de Máquinas hay:  </string>
         </property>
        </widget>
       </item>
@@ -75,7 +75,7 @@
       <item>
        <widget class="QLabel" name="hallTextLabel">
         <property name="text">
-         <string>En el Hall hay:</string>
+         <string>En el Hall de entrada hay:</string>
         </property>
        </widget>
       </item>

@@ -19,7 +19,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     postgresqlconnector.cpp \
-    usuario.cpp \
     usuariospage.cpp
 
 HEADERS += \
@@ -28,7 +27,6 @@ HEADERS += \
     in_outpage.h \
     mainwindow.h \
     postgresqlconnector.h \
-    usuario.h \
     usuariospage.h
 
 FORMS += \

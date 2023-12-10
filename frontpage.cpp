@@ -6,47 +6,6 @@
 #include <QPixmap>
 #include <QMessageBox>
 
-FrontPage::FrontPage(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::FrontPage)
-{
-    //No debería iniciar por acá
-    isUartConnectedFlag = false;
-    setPortname("");
-    initFrontpage();
-}
-void FrontPage::on_Port_rx()
-{
-    QByteArray aux;
-    while(Port->bytesAvailable()) {
-        Port->read(aux.data(),1);
-        RcArr.append(aux.data()[0]);
-        if(aux.data()[0]=='$'){
-
-            ui->plainTextEdit_3->appendPlainText(RcArr);
-            if(RcArr[1]=='P'){
-                handlePas(RcArr);
-            }
-            if(RcArr[1]=='V'){
-                ui->plainTextEdit->appendPlainText(RcArr.data());
-
-                handleVerif(RcArr);
-            }
-            if(RcArr[1]=='a'){
-                QByteArray dat;
-                dat[0] = RcArr[5];
-                dat[1] = RcArr[6];
-                dat[2] = RcArr[7];
-                dat[3] = RcArr[8];
-                if(dat[0] != 'X')
-                    usuariosPage->recieveUID(dat.toHex().data());
-            }
-            RcArr.clear();
-            break;
-        }
-    }
-}
-
 FrontPage::FrontPage(QWidget *parent, QString portname) :
     QMainWindow(parent),
     ui(new Ui::FrontPage)
@@ -59,6 +18,14 @@ FrontPage::FrontPage(QWidget *parent, QString portname) :
     initFrontpage();
 }
 
+FrontPage::~FrontPage()
+{
+    if (PSQLConnector->isOpen())
+        PSQLConnector->cerrarConexionBD();
+    delete Port;
+    delete ui;
+}
+
 void FrontPage::initFrontpage() {
     ui->setupUi(this);
     QPixmap pix(":/img/accessio_logo.png");
@@ -67,7 +34,12 @@ void FrontPage::initFrontpage() {
                                         Qt::KeepAspectRatio));
     ui->logoLabel->setAlignment(Qt::AlignCenter);
     this->setFixedSize(810,310);
-    initPort(getPortname());
+
+    ui->usuariosPushButton->setEnabled(true);
+    if (isUartConnectedFlag)
+        initPort(getPortname());
+    else
+        ui->usuariosPushButton->setEnabled(false);
 }
 
 void FrontPage::initPort(QString portname) {
@@ -82,7 +54,6 @@ void FrontPage::initPort(QString portname) {
         Port->open(QIODevice::ReadWrite);
         isUartConnectedFlag= true;
         connect(Port,SIGNAL(readyRead()),this,SLOT(on_Port_rx()));
-
     }
     else
     {
@@ -124,21 +95,58 @@ void FrontPage::abrirIn_OutPage() {
 //    this->hide();
 }
 
-void FrontPage::recieve(QString Rx) {
-    ui->plainTextEdit->appendPlainText(Rx);
+void FrontPage::on_Port_rx()
+{
+    QByteArray aux;
+    while(Port->bytesAvailable()) {
+        Port->read(aux.data(),1);
+        RcArr.append(aux.data()[0]);
+        if(aux.data()[0]=='$'){
+
+            ui->plainTextEdit_3->appendPlainText(RcArr);
+            if(RcArr[1]=='P'){
+                handlePas(RcArr);
+            }
+            if(RcArr[1]=='V'){
+                ui->plainTextEdit->appendPlainText(RcArr.data());
+
+                handleVerif(RcArr);
+            }
+            if(RcArr[1]=='a'){
+                QByteArray dat;
+                dat[0] = RcArr[5];
+                dat[1] = RcArr[6];
+                dat[2] = RcArr[7];
+                dat[3] = RcArr[8];
+                if(dat[0] != 'X')
+                    usuariosPage->recieveUID(dat.toHex().data());
+            }
+            RcArr.clear();
+            break;
+        }
+    }
 }
 
-FrontPage::~FrontPage()
-{
-    if (PSQLConnector->isOpen())
-        PSQLConnector->cerrarConexionBD();
-    delete Port;
-    delete ui;
+void FrontPage::recieve(QString Rx) {
+    ui->plainTextEdit->appendPlainText(Rx);
 }
 
 void FrontPage::on_edificioPushButton_clicked()
 {
     abrirEdificioPage();
+}
+
+void FrontPage::on_usuariosPushButton_clicked()
+{
+    if (isUartConnectedFlag) {
+        Port->write("#Caca$");
+        abrirUsuariosPage();
+    }
+}
+
+void FrontPage::on_inoutPushButton_clicked()
+{
+    abrirIn_OutPage();
 }
 
 QString FrontPage::getPortname() const
@@ -149,12 +157,6 @@ QString FrontPage::getPortname() const
 void FrontPage::setPortname(const QString &newPortname)
 {
     portname = newPortname;
-}
-
-void FrontPage::on_usuariosPushButton_clicked()
-{
-    Port->write("#Caca$");
-    abrirUsuariosPage();
 }
 
 void FrontPage::handlePas(QByteArray RcArr){
@@ -250,12 +252,4 @@ void FrontPage::handleVerif(QByteArray RcArr){
         ui->plainTextEdit_2->appendPlainText(enHexa);
 
     }
-
-
-
-}
-
-void FrontPage::on_inoutPushButton_clicked()
-{
-    abrirIn_OutPage();
 }

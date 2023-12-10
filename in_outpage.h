@@ -9,7 +9,6 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRegExp>
 
 #include "postgresqlconnector.h"
 
@@ -28,7 +27,9 @@ public:
     ~In_OutPage();
 
 private slots:
-    void on_buscarUsuariosLineEdit_returnPressed();
+    void on_nombreLineEdit_returnPressed();
+    void on_apellidoLineEdit_returnPressed();
+    void on_lupaPushButton_clicked();
 
 private:
     Ui::In_OutPage *ui;
@@ -36,6 +37,7 @@ private:
     QSerialPort *Port;
     PostgreSQLConnector * PSQLConnector;
 
+    void formatTablaUsuarios ( QString nombre, QString apellido );
     QString ubicacionUsuarioAMostrar (QString &ubicacion);
 };
 
