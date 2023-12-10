@@ -2,12 +2,13 @@
 #define POSTGRESQLCONNECTOR_H
 
 #include <QString>
-#include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
+
+#include <QDebug>
 
 class PostgreSQLConnector
 {

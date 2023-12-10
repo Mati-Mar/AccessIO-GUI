@@ -14,6 +14,9 @@ UsuariosPage::UsuariosPage(QWidget *parent, QSerialPort* Port, PostgreSQLConnect
 
 UsuariosPage::~UsuariosPage()
 {
+    if (PSQLConnector->isOpen())
+        PSQLConnector->cerrarConexionBD();
+    delete Port;
     delete ui;
 }
 

@@ -17,7 +17,6 @@ class FrontPage : public QMainWindow
 
 public:
     void recieve(QString Rx);
-    explicit FrontPage(QWidget *parent = nullptr);
     explicit FrontPage(QWidget *parent = nullptr, QString portname= "");
     ~FrontPage();
     bool isUartConnectedFlag;
@@ -30,8 +29,6 @@ private slots:
     void on_usuariosPushButton_clicked();
 
     void on_inoutPushButton_clicked();
-
-    void on_pushButton_clicked();
 
 private:
     void handleVerif(QByteArray RcArr);

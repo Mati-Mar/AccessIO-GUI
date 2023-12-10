@@ -37,14 +37,20 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QLabel" name="lupaLabel">
+     <widget class="QPushButton" name="lupaPushButton">
+      <property name="styleSheet">
+       <string notr="true">image: url(:/img/lupa.png);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="buscarUsuariosLineEdit"/>
+     <widget class="QLineEdit" name="nombreLineEdit"/>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="apellidoLineEdit"/>
     </item>
    </layout>
   </widget>

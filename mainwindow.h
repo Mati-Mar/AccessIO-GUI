@@ -1,12 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QSqlDatabase>
 #include <QMainWindow>
 #include <QSerialPortInfo>
-#include "frontpage.h"
 
-#include <postgresqlconnector.h>
+#include "frontpage.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,17 +24,13 @@ private:
 private slots:
     void on_comboBoxPort_currentIndexChanged(int index);
     void on_pushButtonConectar_clicked();
-    void on_Port_rx();
     void on_sinConexionPushButton_clicked();
-
 private:
     QString Portname;
-    QSerialPort *Port;
     FrontPage * frontPage;
     QByteArray RcArr;
 
     void EnumerarPuertos();
-    PostgreSQLConnector *SQLConnector;
     void abrirFrontpage(bool isUartConnectedFlag);
 };
 

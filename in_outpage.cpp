@@ -1,6 +1,8 @@
 #include "in_outpage.h"
 #include "ui_in_outpage.h"
 
+#include <QMessageBox>
+
 In_OutPage::In_OutPage(QWidget *parent, QSerialPort* Port, PostgreSQLConnector* PSQLConnector) :
     QWidget(parent),
     ui(new Ui::In_OutPage),
@@ -13,34 +15,55 @@ In_OutPage::In_OutPage(QWidget *parent, QSerialPort* Port, PostgreSQLConnector* 
 
 In_OutPage::~In_OutPage()
 {
+    if (PSQLConnector->isOpen())
+        PSQLConnector->cerrarConexionBD();
     delete ui;
 }
 
 void In_OutPage::initIn_OutPage( void ) {
     QPixmap pix(":/img/accessio_logo.png");
-    QPixmap lupaPix(":/img/lupa.png");
     ui->logoLabel->setPixmap(pix.scaled(ui->logoLabel->width(),
                                         ui->logoLabel->height(),
                                         Qt::KeepAspectRatio));
-    ui->lupaLabel->setPixmap(lupaPix.scaled(ui->lupaLabel->width(),
-                                        ui->lupaLabel->height(),
-                                        Qt::KeepAspectRatio));
-    ui->buscarUsuariosLineEdit->setPlaceholderText("Nombre Apellido");
-
+    ui->nombreLineEdit->setPlaceholderText("Nombre");
+    ui->apellidoLineEdit->setPlaceholderText("Apellido");
+    ui->lupaPushButton->setFixedSize(25,25);
     ui->tablaUsuarios->setFixedSize(819, 379);
-
 }
 
-void In_OutPage::on_buscarUsuariosLineEdit_returnPressed()
+void In_OutPage::on_nombreLineEdit_returnPressed()
 {
-    QString nombreCompleto = ui->buscarUsuariosLineEdit->text();
-    ui->usuarioLabel->setAlignment(Qt::AlignCenter);
-    ui->usuarioLabel->setText(nombreCompleto);
-    ui->buscarUsuariosLineEdit->setText("");
-    QRegExp separator("( )");
-    QStringList list = nombreCompleto.toLower().split(separator);
-    QSqlTableModel *model = PSQLConnector->getModeloUsuarioLocation(nullptr, list.first(), list.last());
+    if (!ui->apellidoLineEdit->text().isEmpty() && !ui->nombreLineEdit->text().isEmpty())
+        formatTablaUsuarios(ui->nombreLineEdit->text(), ui->apellidoLineEdit->text());
+    else
+        QMessageBox::critical(this,"Campos incompletos",QString::fromLatin1("Ingrese su nombre y apellido"));
+}
 
+void In_OutPage::on_apellidoLineEdit_returnPressed()
+{
+    if (!ui->apellidoLineEdit->text().isEmpty() && !ui->nombreLineEdit->text().isEmpty())
+        formatTablaUsuarios(ui->nombreLineEdit->text(), ui->apellidoLineEdit->text());
+    else
+        QMessageBox::critical(this,"Campos incompletos",QString::fromLatin1("Ingrese su nombre y apellido"));
+}
+
+void In_OutPage::on_lupaPushButton_clicked()
+{
+    if (!ui->apellidoLineEdit->text().isEmpty() && !ui->nombreLineEdit->text().isEmpty())
+        formatTablaUsuarios(ui->nombreLineEdit->text(), ui->apellidoLineEdit->text());
+    else
+        QMessageBox::critical(this,"Campos incompletos",QString::fromLatin1("Ingrese su nombre y apellido"));
+}
+
+void In_OutPage::formatTablaUsuarios ( QString nombre, QString apellido ) {
+    QString nombreFormateado = nombre.toLower().replace(0, 1, nombre.left(1).toUpper());
+    QString apellidoFormateado = apellido.toLower().replace(0, 1, apellido.left(1).toUpper());
+    ui->usuarioLabel->setAlignment(Qt::AlignCenter);
+    ui->usuarioLabel->setText(QString("%1 %2").arg(nombreFormateado, apellidoFormateado));
+    ui->nombreLineEdit->clear();
+    ui->apellidoLineEdit->clear();
+
+    QSqlTableModel *model = PSQLConnector->getModeloUsuarioLocation(nullptr, nombreFormateado, apellidoFormateado);
     ui->tablaUsuarios->reset();
     ui->tablaUsuarios->setModel(model);
     ui->tablaUsuarios->setColumnHidden(model->fieldIndex("id"), true);  // Ocultar la columna "id"

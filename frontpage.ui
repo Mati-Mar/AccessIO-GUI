@@ -51,7 +51,7 @@
          <item>
           <widget class="QPushButton" name="inoutPushButton">
            <property name="text">
-            <string>Ingreso/Egreso</string>
+            <string>Movimientos</string>
            </property>
           </widget>
          </item>
