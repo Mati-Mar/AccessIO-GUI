@@ -44,11 +44,16 @@ public:
 
     QString getUsernameByOficina(QString Id);
     QString getUsernameByUID(QString Id);
+    void setPasswordByUid(QString uid, QString pass);//Se podría cambiar el nombre a byOficinaID
+    QString getPasswordByUid(QString uid); //Se podría cambiar el nombre a byOficinaID
 
     void setUsername(const QString &newUsername);
     QString getPassword(QString oficina);
     void setPassword(const QString &newPassword);
     bool isOpen();
+    bool existUserByUid(QString uid);
+    QString     getName(QString uid);
+
     unsigned int getUsuariosInRoom( QString room );
     QSqlTableModel* getModeloUsuarios(QObject *parent = nullptr);
     QSqlTableModel* getModeloUsuarioLocation(QObject *parent, QString nombre, QString apellido);

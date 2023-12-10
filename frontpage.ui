@@ -55,6 +55,9 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
+         </item>
         </layout>
        </item>
       </layout>

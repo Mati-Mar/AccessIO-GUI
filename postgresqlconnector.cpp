@@ -28,7 +28,24 @@ PostgreSQLConnector::~PostgreSQLConnector()
 {
     cerrarConexionBD();
 }
+bool PostgreSQLConnector::existUserByUid(QString uid){
 
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    cerrarConexionBD();
+
+    if(query->next()){
+        return true; //Nombre más apellido
+    }
+    else
+        return false;
+
+}
 bool PostgreSQLConnector::abrirConexionBD()
 {
     return db.open();
@@ -117,6 +134,24 @@ QString PostgreSQLConnector::getUsernameByUID(QString uid)
     else
         return "";
 }
+QString PostgreSQLConnector::getName(QString uid)
+{
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery();
+
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Me parece que se podría poner nombre, apellido en lugar de *
+    cerrarConexionBD();
+
+    if(query->next()){
+        return (query->value(2).toString());
+    }
+    else
+        return "";
+}
 QString PostgreSQLConnector::getUsernameByOficina(QString oficina){
     if(!db.isOpen()){
         abrirConexionBD();
@@ -155,6 +190,35 @@ QString PostgreSQLConnector::getPassword(QString oficinaId) { //Se podría cambi
         return "";
 }
 
+QString PostgreSQLConnector::getPasswordByUid(QString uid) { //Se podría cambiar el nombre a byOficinaID
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("SELECT * FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    if(query->next()){
+        return query->value(6).toString();
+    }
+    else
+        return "";
+}
+
+void PostgreSQLConnector::setPasswordByUid(QString uid, QString pass) { //Se podría cambiar el nombre a byOficinaID
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("UPDATE " + this->getSchema() + ".usuario  SET secret_pass=" + pass +" WHERE uid='" + uid + "'");
+    //TODO: Acá en lugar de usar * se podría poner secret_pass y listo
+    cerrarConexionBD();
+
+    return;
+}
 void PostgreSQLConnector::setPassword(const QString &newPassword)
 {
     password = newPassword;
