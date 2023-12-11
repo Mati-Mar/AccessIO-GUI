@@ -39,8 +39,8 @@ void PostgreSQLConnector::CreateUser(QString uid,QString Acceso,QString Nombre,Q
 
     //QSqlQuery *query = new QSqlQuery(db);
     QSqlQuery *guardar_s2= new QSqlQuery(db);
-    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion) "
-                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi)");
+    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion, edad) "
+                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi,:edad)");
 
 
     guardar_s2->bindValue(":uid", uid);
@@ -386,16 +386,44 @@ void PostgreSQLConnector::setMovimientosUsuario(QString uid , QString ubicacion)
 
     QString ubicacionFormateada;
 
-    if ( ubicacion == 'O')
+    if ( ubicacion == "O")
         ubicacionFormateada = "Sala de Oficinas";
-    else if (ubicacion == 'M')
+    else if (ubicacion == "M")
         ubicacionFormateada = "Sala de Maquinas";
-    else if (ubicacion == 'H' )
+    else if (ubicacion == "H" )
         ubicacionFormateada = "Hall de Entrada";
     else
-        ubicacionFormateada = 'Salio';
+        ubicacionFormateada = "Salio";
 
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("INSERT INTO " + this->getSchema() + ".usuario_location (usuario_uid, ubicacion) VALUES ('" + uid + "','" + ubicacionFormateada + "')");
     cerrarConexionBD();
 }
+
+void PostgreSQLConnector::deleteUserByUid(QString uid){
+    if(!db.isOpen()){
+        abrirConexionBD();
+    }
+
+
+
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("DELETE FROM " + this->getSchema() + ".usuario_location WHERE usuario_uid='" + uid + "'");
+    query->exec("DELETE FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
+
+    cerrarConexionBD();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

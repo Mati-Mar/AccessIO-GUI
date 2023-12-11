@@ -24,6 +24,8 @@ public:
 private slots:
     void on_Commit_clicked();
 
+    void on_Commit_2_clicked();
+
 private:
     QString uid;
     QString Acceso;

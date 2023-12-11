@@ -31,12 +31,22 @@ void UsuariosPage::recieveUID(QString uidd){
     if(PSQLConnector->existUserByUid(uidd)){
         QMessageBox::critical(this,"Error",QString::fromLatin1("Este usuario ya existe"));
         return;
+    }else{
+
+        QMessageBox::about(this,"Aceptar",QString::fromLatin1("El usuario ha sido creado"));
+        //QMessageBox::about()
+
+        PSQLConnector->CreateUser(uidd,Acceso,Nombre,Apellido,Edad,Oficina);
     }
-    ui->plainTextEdit->appendPlainText("La uid es: ");
-    ui->plainTextEdit->appendPlainText(uidd);
+
+    uid.clear();
+    Acceso.clear();
+    Nombre.clear();
+    Apellido.clear();
+    Edad.clear();
+    Oficina.clear();
 
 
-    PSQLConnector->CreateUser(uidd,Acceso,Nombre,Apellido,Edad,Oficina);
 
 
 }
@@ -62,12 +72,29 @@ void UsuariosPage::on_Commit_clicked()
         return;
     }
 
-    if(PSQLConnector->ExistOficinaId(Oficina))
+    if(PSQLConnector->ExistOficinaId(Oficina) && !Oficina.contains("X"))
     {
+
         QMessageBox::critical(this,"Error",QString::fromLatin1("Esta Oficina ya esta ocupada!"));
 
         return;
     }
     Port->write("#Add$");
+    QMessageBox::about(this,"Aceptar",QString::fromLatin1("Ingrese su tarjeta en el sensor"));
+
+}
+
+
+void UsuariosPage::on_Commit_2_clicked()
+{
+    if(PSQLConnector->existUserByUid(ui->EliminarInp->toPlainText())){
+        PSQLConnector->deleteUserByUid(ui->EliminarInp->toPlainText());
+        QMessageBox::about(this,"Aceptar",QString::fromLatin1("El usuario ha sido eliminado"));
+
+        ui->EliminarInp->clear();
+    }
+    else
+        QMessageBox::critical(this,"Error",QString::fromLatin1("este usuario no existe!"));
+
 }
 

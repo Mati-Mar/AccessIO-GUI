@@ -67,9 +67,9 @@ void In_OutPage::formatTablaUsuarios ( QString nombre, QString apellido ) {
     ui->tablaUsuarios->reset();
     ui->tablaUsuarios->setModel(model);
     ui->tablaUsuarios->setColumnHidden(model->fieldIndex("id"), true);  // Ocultar la columna "id"
-    ui->tablaUsuarios->setColumnWidth(1, 268);
-    ui->tablaUsuarios->setColumnWidth(2, 268);
-    ui->tablaUsuarios->setColumnWidth(3, 268);
+    ui->tablaUsuarios->setColumnWidth(1, 260);
+    ui->tablaUsuarios->setColumnWidth(2, 260);
+    ui->tablaUsuarios->setColumnWidth(3, 260);
     ui->tablaUsuarios->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tablaUsuarios->show();
