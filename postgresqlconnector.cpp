@@ -39,8 +39,8 @@ void PostgreSQLConnector::CreateUser(QString uid,QString Acceso,QString Nombre,Q
 
     //QSqlQuery *query = new QSqlQuery(db);
     QSqlQuery *guardar_s2= new QSqlQuery(db);
-    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion) "
-                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi)");
+    guardar_s2->prepare("INSERT INTO accessio.usuario (uid, nombre, apellido, acceso, secret_pass, oficina_id, ubicacion, edad) "
+                       "VALUES (:uid, :Nombre, :Apellido, :Acceso, :pass, :Oficina, :ubi,:edad)");
 
 
     guardar_s2->bindValue(":uid", uid);
@@ -408,9 +408,10 @@ void PostgreSQLConnector::deleteUserByUid(QString uid){
 
 
     QSqlQuery *query = new QSqlQuery(db);
+    query->exec("DELETE FROM " + this->getSchema() + ".usuario_location WHERE usuario_uid='" + uid + "'");
     query->exec("DELETE FROM " + this->getSchema() + ".usuario WHERE uid='" + uid + "'");
-    cerrarConexionBD();
 
+    cerrarConexionBD();
 
 }
 

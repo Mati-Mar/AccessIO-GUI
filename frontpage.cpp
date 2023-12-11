@@ -103,12 +103,11 @@ void FrontPage::on_Port_rx()
         RcArr.append(aux.data()[0]);
         if(aux.data()[0]=='$'){
 
-            ui->plainTextEdit_3->appendPlainText(RcArr);
+            qDebug()<< RcArr.data();
             if(RcArr[1]=='P'){
                 handlePas(RcArr);
             }
             if(RcArr[1]=='V'){
-                ui->plainTextEdit->appendPlainText(RcArr.data());
 
                 handleVerif(RcArr);
             }
@@ -128,7 +127,6 @@ void FrontPage::on_Port_rx()
 }
 
 void FrontPage::recieve(QString Rx) {
-    ui->plainTextEdit->appendPlainText(Rx);
 }
 
 void FrontPage::on_edificioPushButton_clicked()
@@ -174,23 +172,17 @@ void FrontPage::handlePas(QByteArray RcArr){
     Pass[1] = RcArr[12];
     Pass[2] = RcArr[13];
     Pass[3] = RcArr[14];
-    ui->plainTextEdit->appendPlainText("oficina: "+ oficina);
 
     QString secretPas = PSQLConnector->getPassword(oficina);
-    ui->plainTextEdit->appendPlainText("pass: "+ Pass);
-    ui->plainTextEdit->appendPlainText("secretPas: "+ secretPas);
-    if(Pass == secretPas){
-        //Port->write(("#pass,y,"+PqslCon->getUsernameByOficina(oficina)+"$"));
 
+    if(Pass == secretPas){
         Port->write(("#pass,y,$"));
     }
     else{
-        //Port->write("#pass,N,"+PqslCon->getUsernameByOficina(oficina)+"$");
         Port->write(("#pass,N,$"));
 
     }
 }
-//#V���,A$
 void FrontPage::handleVerif(QByteArray RcArr){
 
     QByteArray data;
@@ -201,22 +193,24 @@ void FrontPage::handleVerif(QByteArray RcArr){
     data.append(RcArr.at(5));
     QString enHexa = data.toHex().data();
     QString Ofi = PSQLConnector->getOficinaByUUid(enHexa);
-    //if()
 
-//""  noC   mal
-//aa  noC   mal
-//""  SiC   mal
-//aa  SiC   biem
     if(!Ofi.isEmpty()  && PSQLConnector->getAccessByUid(enHexa).contains(RcArr.at(7))){
-        if(Ofi.at(0) == "X"){
 
-            passNueva = "XXXX";
+
+        if(RcArr.at(7) == 'H' && PSQLConnector->getUbicacionByUid(enHexa)== "A"){
+            if(Ofi.at(0) == "X"){
+
+                passNueva = "XXXX";
+            }else{
+                int num =qrand();
+                passNueva =QString::number((num/2)%6)+
+                            QString::number((num/3)%6) +
+                            QString::number((num/10)%6)+
+                            QString::number((num)%6);
+            }
+            PSQLConnector->setPasswordByUid(enHexa,passNueva );
         }else{
-            int num =qrand();
-            passNueva =QString::number((num/2)%6)+
-                        QString::number((num/3)%6) +
-                        QString::number((num/10)%6)+
-                        QString::number((num)%6);
+            passNueva = "XXXX";
         }
 
         QString estring = ("#v,y," +passNueva+","+ PSQLConnector->getName(enHexa) + "$");
@@ -238,16 +232,11 @@ void FrontPage::handleVerif(QByteArray RcArr){
             PSQLConnector->setMovimientosUsuario(enHexa, QString(QChar::fromLatin1(RcArr.at(7))));
         }
 
-        PSQLConnector->setPasswordByUid(enHexa,passNueva );
-        ui->plainTextEdit_2->appendPlainText(estring);
-        ui->plainTextEdit_2->appendPlainText("Bien!");
-        ui->plainTextEdit_2->appendPlainText(enHexa);
+
 
     }
     else{
         Port->write("#v,N,1233,juan$");
-        ui->plainTextEdit_2->appendPlainText("Mal!");
-        ui->plainTextEdit_2->appendPlainText(enHexa);
 
     }
 }

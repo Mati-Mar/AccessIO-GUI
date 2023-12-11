@@ -32,7 +32,7 @@
      <x>110</x>
      <y>40</y>
      <width>731</width>
-     <height>376</height>
+     <height>399</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -101,10 +101,17 @@
      <x>110</x>
      <y>500</y>
      <width>731</width>
-     <height>51</height>
+     <height>72</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="2">
+     <widget class="QPushButton" name="Commit_2">
+      <property name="text">
+       <string>Eliminar Usuario</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="1">
      <widget class="QPlainTextEdit" name="EliminarInp"/>
     </item>
@@ -112,13 +119,6 @@
      <widget class="QLabel" name="EdadLbl_2">
       <property name="text">
        <string>Uid</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="Commit_2">
-      <property name="text">
-       <string>Eliminar Usuario</string>
       </property>
      </widget>
     </item>
